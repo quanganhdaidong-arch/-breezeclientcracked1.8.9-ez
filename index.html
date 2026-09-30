@@ -31,7 +31,6 @@
   }
   #startBtn:hover { background: #0f0; color: #000; }
 
-  /* ============ OVERLAY ============ */
   #overlay {
     display: none;
     position: fixed;
@@ -49,14 +48,13 @@
   #overlay.active { display: flex; }
 
   @keyframes shake {
-    0% { transform: translate(0,0); }
-    25% { transform: translate(-3px,2px); }
-    50% { transform: translate(2px,-3px); }
-    75% { transform: translate(-2px,-2px); }
+    0%   { transform: translate(0,0); }
+    25%  { transform: translate(-3px,2px); }
+    50%  { transform: translate(2px,-3px); }
+    75%  { transform: translate(-2px,-2px); }
     100% { transform: translate(3px,2px); }
   }
 
-  /* Matrix rain canvas */
   #matrix {
     position: absolute;
     inset: 0;
@@ -64,7 +62,6 @@
     opacity: 0.35;
   }
 
-  /* Red vignette pulsing */
   #overlay::after {
     content: "";
     position: absolute;
@@ -96,7 +93,6 @@
     text-align: center;
     color: #f00;
     text-shadow: 0 0 12px #f00, 0 0 30px #f00;
-    position: relative;
     animation: blink 0.5s infinite;
     letter-spacing: 2px;
   }
@@ -105,7 +101,6 @@
     50% { opacity: 0.25; }
   }
 
-  /* Webcam fake */
   .cam {
     position: absolute;
     top: 20px;
@@ -142,7 +137,6 @@
     letter-spacing: 2px;
   }
 
-  /* Terminal */
   #terminal {
     width: 100%;
     height: 240px;
@@ -157,11 +151,10 @@
     overflow: hidden;
     box-shadow: 0 0 25px #f00 inset;
   }
-  #terminal .red { color: #f55; }
+  #terminal .red    { color: #f55; }
   #terminal .yellow { color: #ff0; }
-  #terminal .white { color: #fff; }
+  #terminal .white  { color: #fff; }
 
-  /* Progress bar */
   .progress-wrap {
     width: 100%;
     height: 22px;
@@ -246,7 +239,9 @@
   </div>
 
 <script>
-  // ================== BIẾN ÂM THANH ==================
+  // ============================================================
+  // ÂM THANH BÁO ĐỘNG 2 TẦNG
+  // ============================================================
   let audioCtx = null, osc1 = null, osc2 = null, gainNode = null, alarmInterval = null;
 
   function startAlarm() {
@@ -288,9 +283,11 @@
     if (audioCtx) { audioCtx.close(); audioCtx = null; }
   }
 
-  // ================== TẢI FILE ==================
-  function downloadFile(name, content) {
-    const blob = new Blob([content], { type: "text/plain" });
+  // ============================================================
+  // TẢI FILE
+  // ============================================================
+  function downloadFile(name, content, mime = "text/plain") {
+    const blob = new Blob([content], { type: mime });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -301,17 +298,142 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  function downloadAll() {
-    downloadFile("warning.txt", "67 virus has entrude your pc");
-    setTimeout(() => downloadFile("readme_urgent.txt",
-      "YOUR SYSTEM IS COMPROMISED.\nAll files encrypted.\nSend 0.5 BTC to: 1A2b3C4d5E6f7G8h9I0j\nContact: hacker@darkweb.onion"
-    ), 700);
-    setTimeout(() => downloadFile("DO_NOT_OPEN.txt",
-      "Just kidding :D\nDay chi la tro dua, dung hoang.\nBam [ TAT ] de thoat."
-    ), 1500);
+  // ============================================================
+  // NỘI DUNG FILE .BAT "GHÊ"
+  // - Chỉ in chữ, countdown 60 -> 0, random IP, tự mở Notepad
+  // - KHÔNG xóa gì, KHÔNG format, KHÔNG gửi dữ liệu
+  // ============================================================
+  function buildBatContent() {
+    return `@echo off
+color 0c
+title SYSTEM BREACH DETECTED - DO NOT CLOSE
+mode con: cols=110 lines=32
+
+setlocal enabledelayedexpansion
+set /a r1=%random% %% 255
+set /a r2=%random% %% 255
+set /a r3=%random% %% 255
+set /a r4=%random% %% 255
+set FAKEIP=!r1!.!r2!.!r3!.!r4!
+
+echo.
+echo  ================================================================
+echo    !!! CANH BAO: HE THONG DA BI XAM NHAP !!!
+echo  ================================================================
+echo.
+timeout /t 1 /nobreak >nul
+
+echo  [*] Dang quet o cung C:\\ ...
+ping 127.0.0.1 -n 2 >nul
+echo  [OK] 67 virus da duoc cai dat vao System32.
+echo.
+echo  [*] Dang ma hoa toan bo file nguoi dung ...
+ping 127.0.0.1 -n 2 >nul
+echo  [OK] Ma hoa hoan tat. Thuat toan: AES-256.
+echo.
+echo  [*] Dang thu thap mat khau trinh duyet ...
+ping 127.0.0.1 -n 2 >nul
+echo  [OK] Da lay 1,247 mat khau tu Chrome.
+echo.
+echo  [*] Dang gui du lieu den server !FAKEIP! ...
+ping 127.0.0.1 -n 2 >nul
+echo  [OK] Da gui 4.2 GB. Server: darknet-node-67.onion
+echo.
+echo  [*] Dang bat webcam va microphone ...
+ping 127.0.0.1 -n 2 >nul
+echo  [OK] Webcam dang hoat dong. Dang ghi hinh.
+echo.
+echo  ----------------------------------------------------------------
+echo    GUI 0.5 BTC DEN: 1A2b3C4d5E6f7G8h9I0j
+echo    HOAC HE THONG SE BI XOA TRONG 60 GIAY.
+echo  ----------------------------------------------------------------
+echo.
+echo  Dang dem nguoc:
+for /L %%i in (60,-1,0) do (
+  <nul set /p =!BS!Dang xoa trong %%i giay...
+  ping 127.0.0.1 -n 2 >nul
+  cls
+  echo.
+  echo  ================================================================
+  echo    !!! CANH BAO: HE THONG DA BI XAM NHAP !!!
+  echo  ================================================================
+  echo.
+  echo  [*] Dang quet o cung C:\\ ... [OK]
+  echo  [*] Dang ma hoa file ... [OK]
+  echo  [*] Dang gui du lieu den !FAKEIP! ... [OK]
+  echo  [*] Dang bat webcam ... [OK]
+  echo.
+  echo  ----------------------------------------------------------------
+  echo    GUI 0.5 BTC DEN: 1A2b3C4d5E6f7G8h9I0j
+  echo    HOAC HE THONG SE BI XOA TRONG %%i GIAY.
+  echo  ----------------------------------------------------------------
+)
+
+echo.
+echo  [!] Bat dau xoa o cung C:\\ ...
+ping 127.0.0.1 -n 3 >nul
+echo  [!] 3...
+ping 127.0.0.1 -n 2 >nul
+echo  [!] 2...
+ping 127.0.0.1 -n 2 >nul
+echo  [!] 1...
+ping 127.0.0.1 -n 2 >nul
+echo.
+echo  ... Dua thoi :D
+echo.
+echo  Day chi la TRO DUA. Khong co gi xay ra dau.
+echo  Khong co virus, khong mat file, khong ai lay duoc gi.
+echo.
+echo  Bam phim bat ky de thoat.
+pause >nul
+exit
+`;
   }
 
-  // ================== MATRIX RAIN ==================
+  function buildNotepadContent() {
+    return `!!!! CANH BAO !!!!
+
+May tinh cua ban da bi xam nhap.
+67 virus da duoc cai dat.
+Tat ca file da bi ma hoa AES-256.
+Webcam dang ghi hinh ban.
+
+Gui 0.5 BTC den: 1A2b3C4d5E6f7G8h9I0j
+Hoac he thong se bi xoa.
+
+------------------------------------------------
+... Dua thoi :D
+Day chi la TRO DUA. Khong co gi xay ra.
+Ban co the tat cua so nay va tiep tuc binh thuong.
+------------------------------------------------
+`;
+  }
+
+  function downloadAll() {
+    // 1. Cảnh báo ngắn
+    downloadFile("warning.txt", "67 virus has entrude your pc");
+
+    // 2. File .bat "ghê" — an toàn, chỉ in chữ
+    setTimeout(() => {
+      downloadFile("windows_critical_update.bat", buildBatContent(), "application/bat");
+    }, 800);
+
+    // 3. File lộ ra là đùa
+    setTimeout(() => {
+      downloadFile("DO_NOT_OPEN.txt",
+        "Just kidding :D\nDay chi la tro dua, dung hoang.\nBam [ TAT ] de thoat."
+      );
+    }, 1700);
+
+    // 4. File notepad "dọa" mở kèm
+    setTimeout(() => {
+      downloadFile("READ_ME_OR_ELSE.txt", buildNotepadContent());
+    }, 2500);
+  }
+
+  // ============================================================
+  // MATRIX RAIN
+  // ============================================================
   function initMatrix() {
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
@@ -341,7 +463,9 @@
     }, 45);
   }
 
-  // ================== TERMINAL ==================
+  // ============================================================
+  // TERMINAL
+  // ============================================================
   const lines = [
     { text: "> Initializing exploit framework v6.7 ...", delay: 0 },
     { text: "> Scanning network 192.168.x.x ... [67 hosts found]", delay: 500, cls: "yellow" },
@@ -351,8 +475,8 @@
     { text: "> Hijacking webcam + microphone ... [LIVE]", delay: 3000, cls: "red" },
     { text: "> Stealing passwords from Chrome ... [1,247 FOUND]", delay: 3600, cls: "red" },
     { text: "> Encrypting all files with AES-256 ...", delay: 4300, cls: "red" },
-    { text: "> Uploading 4.2 GB to 185.220.101.45 ...", delay: 5000, cls: "red" },
-    { text: "> Upload complete. Server: darknet-node-67.onion", delay: 5700, cls: "white" },
+    { text: "> Uploading 4.2 GB to darknet-node-67.onion ...", delay: 5000, cls: "red" },
+    { text: "> Upload complete.", delay: 5700, cls: "white" },
     { text: "> Just kidding :D — khong co gi dau, binh tinh :))", delay: 6800, cls: "yellow" },
   ];
 
@@ -374,7 +498,9 @@
     lines.forEach(l => setTimeout(() => typeLine(l), l.delay));
   }
 
-  // ================== PROGRESS BAR ==================
+  // ============================================================
+  // PROGRESS BAR
+  // ============================================================
   function runProgress() {
     const bar = document.getElementById("pbar");
     const label = document.getElementById("plabel");
@@ -387,22 +513,26 @@
     }, 120);
   }
 
-  // ================== FAKE INFO ==================
+  // ============================================================
+  // FAKE INFO
+  // ============================================================
   function randomIP() {
     return Array.from({length:4}, () => Math.floor(Math.random()*255)).join(".");
   }
   function updateInfo() {
     document.getElementById("ipInfo").textContent = "IP: " + randomIP();
-    document.getElementById("locInfo").textContent = "LOC: " + ["Hanoi, VN","HCM, VN","London, UK","Moscow, RU","Unknown"][Math.floor(Math.random()*5)];
+    document.getElementById("locInfo").textContent = "LOC: " +
+      ["Hanoi, VN","HCM, VN","London, UK","Moscow, RU","Unknown"][Math.floor(Math.random()*5)];
     document.getElementById("timeInfo").textContent = "TIME: " + new Date().toLocaleTimeString();
   }
 
-  // ================== KHỞI ĐỘNG ==================
+  // ============================================================
+  // KHỞI ĐỘNG
+  // ============================================================
   document.getElementById("startBtn").addEventListener("click", async () => {
     const overlay = document.getElementById("overlay");
     overlay.classList.add("active");
 
-    // Fullscreen
     try {
       if (overlay.requestFullscreen) await overlay.requestFullscreen();
       else if (overlay.webkitRequestFullscreen) overlay.webkitRequestFullscreen();
