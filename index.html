@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prank</title>
+  <title>System</title>
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -13,6 +15,7 @@
       font-family: system-ui, sans-serif;
       display: grid;
       place-items: center;
+      overflow: hidden;
     }
 
     #startBtn {
@@ -38,20 +41,59 @@
       justify-content: center;
       text-align: center;
       padding: 20px;
+      animation: screenShake 0.15s infinite;
+    }
+
+    #overlay.flash {
+      animation: screenShake 0.15s infinite, redFlash 0.35s infinite;
+    }
+
+    @keyframes redFlash {
+      0%, 100% { background: #000; }
+      50% { background: #300; }
+    }
+
+    @keyframes screenShake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-2px, 1px); }
+      50% { transform: translate(2px, -1px); }
+      75% { transform: translate(-1px, -2px); }
+      100% { transform: translate(1px, 2px); }
     }
 
     #overlay h1 {
       font-size: clamp(28px, 8vw, 72px);
       margin: 0 0 16px;
-      animation: blink 0.8s infinite;
+      animation: blink 0.6s infinite;
+      text-shadow: 0 0 20px #f00;
     }
 
     @keyframes blink {
-      50% { opacity: 0; }
+      50% { opacity: 0.2; }
     }
 
+    #terminal {
+      width: min(720px, 92vw);
+      height: 220px;
+      background: #0a0a0a;
+      border: 1px solid #f00;
+      border-radius: 6px;
+      padding: 12px;
+      font-family: "Courier New", monospace;
+      color: #0f0;
+      text-align: left;
+      font-size: 14px;
+      overflow: hidden;
+      line-height: 1.4;
+      box-shadow: 0 0 25px #f00 inset;
+    }
+
+    #terminal .line { white-space: pre-wrap; }
+    #terminal .red { color: #f55; }
+    #terminal .yellow { color: #ff0; }
+
     #closeBtn {
-      margin-top: 24px;
+      margin-top: 20px;
       padding: 12px 22px;
       font-size: 18px;
       cursor: pointer;
@@ -67,70 +109,128 @@
   <button id="startBtn">Bấm vào đây</button>
 
   <div id="overlay">
-    <h1>MÁY TÍNH BẠN ĐÃ BỊ HACK!</h1>
-    <p>Đây chỉ là trò đùa. Bấm nút bên dưới để tắt.</p>
-    <button id="closeBtn">TẮT</button>
+    <h1>⚠ MÁY TÍNH BẠN ĐÃ BỊ HACK ⚠</h1>
+    <div id="terminal"></div>
+    <button id="closeBtn">TẮT (KHÔNG CỨU ĐƯỢC ĐÂU)</button>
   </div>
 
   <script>
     let audioCtx = null;
-    let oscillator = null;
-    let gainNode = null;
-    let alarmInterval = null;
+    let osc1 = null, osc2 = null, gainNode = null, alarmInterval = null;
 
+    // -------- ÂM THANH BÁO ĐỘNG 2 TẦNG --------
     function startAlarm() {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === "suspended") audioCtx.resume();
 
-      oscillator = audioCtx.createOscillator();
       gainNode = audioCtx.createGain();
-
-      oscillator.type = "sawtooth";
-      oscillator.frequency.value = 800;
-      gainNode.gain.value = 0.05;
-
-      oscillator.connect(gainNode);
+      gainNode.gain.value = 0.09;
       gainNode.connect(audioCtx.destination);
-      oscillator.start();
+
+      osc1 = audioCtx.createOscillator();
+      osc1.type = "sawtooth";
+      osc1.frequency.value = 700;
+      osc1.connect(gainNode);
+      osc1.start();
+
+      osc2 = audioCtx.createOscillator();
+      osc2.type = "square";
+      osc2.frequency.value = 350;
+      osc2.connect(gainNode);
+      osc2.start();
 
       let up = true;
       alarmInterval = setInterval(() => {
-        if (!audioCtx || !oscillator) return;
+        if (!audioCtx || !osc1 || !osc2) return;
         const now = audioCtx.currentTime;
-        const target = up ? 1200 : 600;
-        oscillator.frequency.linearRampToValueAtTime(target, now + 0.4);
+        const t1 = up ? 1400 : 500;
+        const t2 = up ? 700 : 250;
+        osc1.frequency.linearRampToValueAtTime(t1, now + 0.35);
+        osc2.frequency.linearRampToValueAtTime(t2, now + 0.35);
         up = !up;
-      }, 450);
+      }, 400);
     }
 
     function stopAlarm() {
       if (alarmInterval) clearInterval(alarmInterval);
       alarmInterval = null;
-
-      if (oscillator) {
-        try { oscillator.stop(); } catch (e) {}
-        oscillator.disconnect();
-        oscillator = null;
-      }
-
-      if (gainNode) {
-        gainNode.disconnect();
-        gainNode = null;
-      }
-
-      if (audioCtx) {
-        audioCtx.close();
-        audioCtx = null;
-      }
+      [osc1, osc2].forEach(o => { if (o) { try { o.stop(); } catch(e){} o.disconnect(); } });
+      osc1 = osc2 = null;
+      if (gainNode) { gainNode.disconnect(); gainNode = null; }
+      if (audioCtx) { audioCtx.close(); audioCtx = null; }
     }
 
+    // -------- TẢI FILE CẢNH BÁO --------
+    function downloadFile(name, content) {
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function downloadAll() {
+      downloadFile("warning.txt", "67 virus has entrude your pc");
+      setTimeout(() => {
+        downloadFile("readme_urgent.txt",
+          "Your system is compromised.\nAll files are encrypted.\nContact: hacker@darkweb.onion");
+      }, 800);
+      setTimeout(() => {
+        downloadFile("DO_NOT_OPEN.txt",
+          "Just kidding :)\nDay la tro dua, dung hoang.\nBam TAT de thoat.");
+      }, 1600);
+    }
+
+    // -------- TERMINAL GÕ CHỮ --------
+    const lines = [
+      { text: "> Initializing exploit...", delay: 0 },
+      { text: "> Connecting to 192.168.1.1 ... [OK]", delay: 500, cls: "yellow" },
+      { text: "> Bypassing firewall ... [OK]", delay: 1100, cls: "yellow" },
+      { text: "> Injecting 67 viruses ... [DONE]", delay: 1800, cls: "red" },
+      { text: "> Encrypting C:\\Users\\... [DONE]", delay: 2500, cls: "red" },
+      { text: "> Uploading data to hacker server ... 67%", delay: 3200, cls: "red" },
+      { text: "> Uploading data to hacker server ... 100%", delay: 4000, cls: "red" },
+      { text: "> SYSTEM COMPROMISED.", delay: 4600, cls: "red" },
+      { text: "> Just kidding :D", delay: 5400, cls: "yellow" },
+    ];
+
+    function typeLine(line) {
+      const term = document.getElementById("terminal");
+      const div = document.createElement("div");
+      div.className = "line " + (line.cls || "");
+      term.appendChild(div);
+
+      let i = 0;
+      const interval = setInterval(() => {
+        div.textContent += line.text[i];
+        i++;
+        if (i >= line.text.length) clearInterval(interval);
+      }, 18);
+    }
+
+    function runTerminal() {
+      const term = document.getElementById("terminal");
+      term.innerHTML = "";
+      lines.forEach(l => setTimeout(() => typeLine(l), l.delay));
+    }
+
+    // -------- SỰ KIỆN --------
     document.getElementById("startBtn").addEventListener("click", () => {
-      document.getElementById("overlay").style.display = "flex";
+      const overlay = document.getElementById("overlay");
+      overlay.style.display = "flex";
+      overlay.classList.add("flash");
       startAlarm();
+      runTerminal();
+      downloadAll();
     });
 
     document.getElementById("closeBtn").addEventListener("click", () => {
       document.getElementById("overlay").style.display = "none";
+      document.getElementById("overlay").classList.remove("flash");
       stopAlarm();
     });
   </script>
