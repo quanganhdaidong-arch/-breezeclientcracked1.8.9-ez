@@ -1,546 +1,139 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tải file PDF Google Drive bị chặn download — 4PDF</title>
-<meta name="description" content="Tải file PDF Google Drive bị chặn download nhanh chóng. Dán link, chọn chất lượng, nhận PDF đủ trang về máy — không cần đăng nhập Google." />
-<meta name="keywords" content="tải file google drive bị chặn download, tải pdf google drive bị chặn, download file google drive bị chặn" />
-<meta name="robots" content="index,follow,max-image-preview:large" />
-<meta name="theme-color" content="#4285f4" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Tải file PDF Google Drive bị chặn download" />
-<meta property="og:description" content="Dán link, chọn chất lượng, nhận PDF đủ trang về máy." />
-<meta name="twitter:card" content="summary_large_image" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prank</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #111;
+      color: #0f0;
+      font-family: system-ui, sans-serif;
+      display: grid;
+      place-items: center;
+    }
 
-<style>
-:root{
-  --bg:#ffffff;--bg-soft:#f6f8fb;--bg-card:#ffffff;--line:#e4e8ef;--line-soft:#eef1f6;
-  --text:#0f172a;--muted:#5b6b84;--brand:#4285f4;--brand-dark:#2c6ee0;--brand-soft:#eaf1ff;
-  --ok:#16a34a;--warn:#f59e0b;--danger:#dc2626;--radius:14px;--radius-lg:20px;
-  --shadow:0 1px 2px rgba(15,23,42,.06),0 8px 24px -12px rgba(15,23,42,.14);
-  --shadow-lg:0 24px 48px -24px rgba(15,23,42,.25);
-  --font:"Google Sans","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-}
-[data-theme="dark"]{
-  --bg:#0b1220;--bg-soft:#0f172a;--bg-card:#111a2e;--line:#1e2a45;--line-soft:#182338;
-  --text:#e6edf7;--muted:#9aabc4;--brand:#5b9bff;--brand-dark:#78aeff;--brand-soft:#16233d;
-  --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px -12px rgba(0,0,0,.6);
-  --shadow-lg:0 24px 48px -24px rgba(0,0,0,.7);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;font-family:var(--font);color:var(--text);background:var(--bg);
-  line-height:1.6;-webkit-font-smoothing:antialiased;font-size:16px;
-}
-a{color:var(--brand);text-decoration:none}
-a:hover{text-decoration:underline}
-img{max-width:100%;display:block}
-.shell{max-width:1080px;margin:0 auto;padding:0 20px}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    #startBtn {
+      padding: 14px 24px;
+      font-size: 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: #0f0;
+      color: #000;
+      font-weight: bold;
+    }
 
-/* ===== HEADER ===== */
-.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-[data-theme="dark"] .topbar{background:rgba(11,18,32,.85)}
-.topbar-inner{display:flex;align-items:center;gap:16px;height:64px}
-.brand{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--text)}
-.brand-text{letter-spacing:-.2px}
-.brand-accent{color:var(--brand)}
-.brand-logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#4285f4,#34a853);display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800}
-.brand-logo::after{content:"4";}
-.top-nav{display:flex;gap:6px;margin-left:auto}
-.top-link{padding:8px 12px;border-radius:10px;color:var(--text);font-size:14.5px;font-weight:500}
-.top-link:hover{background:var(--bg-soft);text-decoration:none}
-.topbar-tools{display:flex;align-items:center;gap:8px}
-.btn-theme,.lang-trigger{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--bg-card);color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:16px}
-.btn-theme:hover,.lang-trigger:hover{border-color:var(--brand);color:var(--brand)}
-.btn-tk{padding:8px 14px;border-radius:10px;background:var(--brand);color:#fff !important;font-weight:600;font-size:14px}
-.btn-tk:hover{background:var(--brand-dark);text-decoration:none}
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      color: #f00;
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
 
-/* ===== HERO ===== */
-.stage{padding:56px 0 32px;background:
-  radial-gradient(1000px 400px at 50% -10%, var(--brand-soft), transparent 70%);
-}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--bg-card);border:1px solid var(--line);color:var(--muted);font-size:13px;font-weight:600;margin:0 0 16px}
-.eyebrow .ico{width:16px;height:16px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-h1{font-size:clamp(28px,4.6vw,46px);line-height:1.15;letter-spacing:-.02em;margin:0 0 14px;font-weight:700}
-h1 span{color:var(--brand)}
-.lead{font-size:clamp(15px,1.6vw,18px);color:var(--muted);margin:0 0 28px;max-width:720px}
+    #overlay h1 {
+      font-size: clamp(28px, 8vw, 72px);
+      margin: 0 0 16px;
+      animation: blink 0.8s infinite;
+    }
 
-/* ===== PANEL ===== */
-.panel{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden}
-.panel-inner{padding:24px}
-.label{display:block;margin-bottom:16px}
-.label > span{display:block;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:8px}
-.field{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg-soft);padding:0 12px;transition:border-color .15s,box-shadow .15s}
-.field:focus-within{border-color:var(--brand);box-shadow:0 0 0 4px rgba(66,133,244,.14);background:var(--bg-card)}
-.field-ico{width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.input{flex:1;border:0;background:transparent;padding:14px 0;font-size:15px;color:var(--text);outline:none;font-family:inherit}
-.input::placeholder{color:#94a3b8}
-.field-paste{border:0;background:transparent;cursor:pointer;color:var(--muted);padding:6px;border-radius:8px;display:grid;place-items:center}
-.field-paste:hover{color:var(--brand);background:var(--brand-soft)}
-.field-paste .ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
 
-.qualities{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.quality-opt{position:relative;cursor:pointer}
-.quality-opt input{position:absolute;opacity:0;pointer-events:none}
-.quality-opt span{display:block;text-align:center;padding:12px 10px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg-soft);font-weight:600;font-size:14px;color:var(--muted);transition:all .15s}
-.quality-opt input:checked + span{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
-.quality-opt span small{display:block;font-weight:400;font-size:11.5px;opacity:.85;margin-top:2px}
-
-.actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:20px}
-.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:transform .12s,box-shadow .15s,background .15s}
-.btn-primary{background:linear-gradient(135deg,#4285f4,#2c6ee0);color:#fff;box-shadow:0 8px 20px -8px rgba(66,133,244,.6)}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 26px -10px rgba(66,133,244,.75)}
-.btn-primary:disabled{opacity:.6;cursor:wait;transform:none}
-.btn .ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.hint{color:var(--muted);font-size:13px;margin:0}
-
-.formats{margin:0;padding:14px 24px;border-top:1px solid var(--line-soft);background:var(--bg-soft);font-size:13px;color:var(--muted);text-align:center}
-.formats em{color:var(--text);font-style:normal;font-weight:600}
-
-/* ===== JOBS ===== */
-.jobs-list{display:grid;gap:10px;margin-top:18px}
-.job{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg-soft);display:flex;gap:12px;align-items:center}
-.job-ico{width:36px;height:36px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;flex-shrink:0}
-.job-ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.job-body{flex:1;min-width:0}
-.job-title{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.job-sub{font-size:12.5px;color:var(--muted);margin-top:2px}
-.job-sub.err{color:var(--danger)}
-.job-sub.ok{color:var(--ok)}
-.job-dl{padding:8px 14px;border-radius:9px;background:var(--ok);color:#fff;font-weight:600;font-size:13px;border:0;cursor:pointer}
-.job-dl:hover{background:#0e8f3f}
-.progress{height:4px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}
-.progress > i{display:block;height:100%;background:var(--brand);width:0;transition:width .3s}
-
-/* ===== SECTIONS ===== */
-.block{margin:64px 0}
-.block-head{margin-bottom:24px}
-.block h2{font-size:clamp(22px,2.6vw,30px);margin:0;letter-spacing:-.01em}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;list-style:none;padding:0;margin:0}
-.steps li{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
-.step-ico{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--brand-soft);color:var(--brand);margin-bottom:12px}
-.step-ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.steps h3{margin:0 0 6px;font-size:16px}
-.step-no{color:var(--brand);font-weight:700;margin-right:4px}
-.steps p{margin:0;color:var(--muted);font-size:14px}
-.steps code{background:var(--bg-soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:12.5px}
-
-.quality-section-head{text-align:center;margin-bottom:28px}
-.quality-section-sub{color:var(--muted);margin:8px 0 0}
-.quality-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.quality-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
-.quality-card--low{border-top:3px solid #10b981}
-.quality-card--mid{border-top:3px solid #4285f4}
-.quality-card--high{border-top:3px solid #f59e0b}
-.quality-card-icon{width:44px;height:44px;border-radius:12px;background:var(--bg-soft);display:grid;place-items:center;margin-bottom:12px}
-.quality-card-icon svg{width:22px;height:22px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.quality-card h3{margin:0 0 6px;font-size:17px}
-.quality-card p{margin:0 0 12px;color:var(--muted);font-size:14px}
-.quality-card-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--bg-soft);font-size:12px;font-weight:600;color:var(--muted)}
-.quality-card-badge svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.quality-callout{display:flex;gap:12px;align-items:flex-start;padding:16px 18px;border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:12px;background:var(--bg-soft);margin-top:22px}
-.quality-callout svg{width:20px;height:20px;flex-shrink:0;margin-top:2px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.quality-callout p{margin:0;font-size:14px;color:var(--muted)}
-
-.card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
-.seo-copy h3{margin:22px 0 8px;font-size:17px}
-.seo-copy p{margin:0 0 10px;color:var(--muted);font-size:15px}
-.seo-copy code{background:var(--bg-soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px}
-.seo-copy em{color:var(--text);font-style:normal;font-weight:600}
-
-details{border-bottom:1px solid var(--line-soft);padding:14px 0}
-details:last-child{border-bottom:0}
-details summary{cursor:pointer;font-weight:600;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
-details summary::-webkit-details-marker{display:none}
-details summary::after{content:"+";color:var(--brand);font-weight:700;font-size:20px;line-height:1}
-details[open] summary::after{content:"−"}
-details p{margin:10px 0 0;color:var(--muted);font-size:14.5px}
-
-/* ===== FOOTER ===== */
-.foot{border-top:1px solid var(--line);background:var(--bg-soft);margin-top:80px}
-.foot-inner{padding:28px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.foot p{margin:0;color:var(--muted);font-size:14px}
-.foot nav{display:flex;gap:18px;flex-wrap:wrap}
-.foot nav a{color:var(--muted);font-size:14px}
-.foot nav a:hover{color:var(--brand)}
-
-@media(max-width:760px){
-  .top-nav{display:none}
-  .panel-inner{padding:18px}
-  .qualities{grid-template-columns:1fr}
-  .steps,.quality-cards{grid-template-columns:1fr}
-  .actions{flex-direction:column;align-items:stretch}
-  .btn-primary{justify-content:center}
-  .foot-inner{flex-direction:column;text-align:center}
-}
-</style>
+    #closeBtn {
+      margin-top: 24px;
+      padding: 12px 22px;
+      font-size: 18px;
+      cursor: pointer;
+      border: 2px solid #f00;
+      background: transparent;
+      color: #f00;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-
 <body>
 
-<header class="topbar">
-  <div class="shell topbar-inner">
-    <a class="brand" href="/">
-      <span class="brand-logo" aria-hidden="true"></span>
-      <span class="brand-text">4<span class="brand-accent">PDF</span></span>
-    </a>
-    <nav class="top-nav">
-      <a class="top-link" href="#cach-dung">Cách dùng</a>
-      <a class="top-link" href="#chat-luong">Chất lượng</a>
-      <a class="top-link" href="#huong-dan">Hướng dẫn</a>
-      <a class="top-link" href="#cau-hoi">Câu hỏi</a>
-    </nav>
-    <div class="topbar-tools">
-      <button class="btn-theme" id="btn-theme" type="button" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện">🌙</button>
-      <a class="btn-tk" href="#url">Dùng thử</a>
-    </div>
+  <button id="startBtn">Bấm vào đây</button>
+
+  <div id="overlay">
+    <h1>MÁY TÍNH BẠN ĐÃ BỊ HACK!</h1>
+    <p>Đây chỉ là trò đùa. Bấm nút bên dưới để tắt.</p>
+    <button id="closeBtn">TẮT</button>
   </div>
-</header>
 
-<main>
-  <section class="stage">
-    <div class="shell">
-      <p class="eyebrow">
-        <svg class="ico" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
-        Không cần đăng nhập Google
-      </p>
+  <script>
+    let audioCtx = null;
+    let oscillator = null;
+    let gainNode = null;
+    let alarmInterval = null;
 
-      <h1>Tải file PDF Google Drive <span>bị chặn download</span></h1>
-      <p class="lead">Dán link Drive công khai, chọn chất lượng, nhận PDF đủ trang về máy. Hỗ trợ cả tài liệu chỉ cho xem mà không có nút Tải xuống.</p>
+    function startAlarm() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
 
-      <div class="panel">
-        <div class="panel-inner">
-          <form class="form" id="convert-form">
-            <label class="label" for="url">
-              <span>Link Google Drive</span>
-              <span class="field">
-                <svg class="field-ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l2-2a5 5 0 00-7-7l-1 1"/><path d="M14 11a5 5 0 00-7.5-.5l-2 2a5 5 0 007 7l1-1"/></svg>
-                <input class="input" id="url" name="url" type="url" required inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://drive.google.com/file/d/…/view" />
-                <button type="button" class="field-paste" id="paste-url-btn" title="Dán link" aria-label="Dán link từ clipboard">
-                  <svg class="ico" viewBox="0 0 24 24"><path d="M9 2h6a1 1 0 011 1v2H8V3a1 1 0 011-1z"/><path d="M8 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2"/></svg>
-                </button>
-              </span>
-            </label>
+      oscillator = audioCtx.createOscillator();
+      gainNode = audioCtx.createGain();
 
-            <div class="label">
-              <span>Chất lượng</span>
-              <div class="qualities" id="qualities" role="radiogroup">
-                <label class="quality-opt"><input type="radio" name="quality" value="low"><span>Thấp<small>Nhẹ · Nhanh</small></span></label>
-                <label class="quality-opt"><input type="radio" name="quality" value="mid" checked><span>Thường<small>Cân bằng</small></span></label>
-                <label class="quality-opt"><input type="radio" name="quality" value="high"><span>Cao<small>Sắc nét</small></span></label>
-              </div>
-            </div>
+      oscillator.type = "sawtooth";
+      oscillator.frequency.value = 800;
+      gainNode.gain.value = 0.05;
 
-            <div class="actions">
-              <button class="btn btn-primary" id="submit-btn" type="submit">
-                <span id="submit-text">Bắt đầu tải</span>
-                <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-              </button>
-              <p class="hint">Gửi được nhiều link liên tiếp.</p>
-            </div>
-          </form>
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      oscillator.start();
 
-          <div class="jobs-list" id="jobs-list" aria-live="polite"></div>
-        </div>
-
-        <p class="formats">Hỗ trợ <strong>pdf · doc · docx · ppt · pptx</strong> — tài liệu cần chia sẻ ở chế độ <em>bất kỳ ai có đường liên kết</em></p>
-      </div>
-    </div>
-  </section>
-
-  <div class="shell">
-    <!-- CÁCH DÙNG -->
-    <section class="block" id="cach-dung">
-      <div class="block-head"><h2>Cách dùng</h2></div>
-      <ol class="steps">
-        <li>
-          <span class="step-ico"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l2-2a5 5 0 00-7-7l-1 1"/><path d="M14 11a5 5 0 00-7.5-.5l-2 2a5 5 0 007 7l1-1"/></svg></span>
-          <h3><span class="step-no">01</span> Dán link tài liệu</h3>
-          <p>Link dạng <code>drive.google.com/file/d/…/view</code></p>
-        </li>
-        <li>
-          <span class="step-ico"><svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></span>
-          <h3><span class="step-no">02</span> Chọn chất lượng</h3>
-          <p>Chọn Thấp, Thường hoặc Cao theo nhu cầu.</p>
-        </li>
-        <li>
-          <span class="step-ico"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg></span>
-          <h3><span class="step-no">03</span> Tải file về</h3>
-          <p>Tiến độ hiện theo từng bước, bạn biết còn bao lâu.</p>
-        </li>
-      </ol>
-    </section>
-
-    <!-- CHẤT LƯỢNG -->
-    <section class="block" id="chat-luong">
-      <header class="quality-section-head">
-        <h2>Chọn chất lượng nào?</h2>
-        <p class="quality-section-sub">Mỗi mức chất lượng phù hợp với nhu cầu và mục đích sử dụng khác nhau.</p>
-      </header>
-      <div class="quality-cards">
-        <article class="quality-card quality-card--low">
-          <div class="quality-card-icon"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"/><path d="M14 3v5h5"/></svg></div>
-          <h3>Thấp</h3>
-          <p>Đọc nhanh, file nhẹ, tải về nhanh.</p>
-          <span class="quality-card-badge"><svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0113.5 6.5C16 4 19 4 21 6c-2 2-3.5 4.5-3.5 7.5A7 7 0 0111 20z"/></svg>Nhẹ · Nhanh</span>
-        </article>
-        <article class="quality-card quality-card--mid">
-          <div class="quality-card-icon"><svg viewBox="0 0 24 24"><path d="M16 16h6"/><path d="M8 16H2"/><path d="M12 3v13"/><path d="M12 3l3 4H9l3-4z"/></svg></div>
-          <h3>Thường</h3>
-          <p>Cân bằng, hợp với hầu hết tài liệu.</p>
-          <span class="quality-card-badge"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/></svg>Cân bằng · Phổ biến</span>
-        </article>
-        <article class="quality-card quality-card--high">
-          <div class="quality-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="14" height="12" rx="2"/><circle cx="17" cy="17" r="3"/><path d="M19.5 19.5L22 22"/></svg></div>
-          <h3>Cao</h3>
-          <p>Phóng to chữ nhỏ, bản vẽ và công thức.</p>
-          <span class="quality-card-badge"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.2 5.6.5-4.2 3.7 1.3 5.5L12 14.8 7.1 16.9l1.3-5.5L4.2 8.7l5.6-.5L12 3z"/></svg>Sắc nét · Chi tiết</span>
-        </article>
-      </div>
-      <div class="quality-callout">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
-        <p>Với bản quét từ sách giấy, độ phân giải do bản gốc quyết định. Khi đã chạm trần đó, chọn mức cao hơn không thêm được chi tiết nào.</p>
-      </div>
-    </section>
-
-    <!-- HƯỚNG DẪN -->
-    <section class="block" id="huong-dan">
-      <div class="block-head"><h2>Cách tải file Google Drive bị chặn download</h2></div>
-      <div class="card seo-copy">
-        <p>Nhiều tài liệu trên Google Drive chỉ cho <strong>xem trực tuyến</strong> mà <strong>không có nút Tải xuống</strong> — người chia sẻ đã tắt quyền download hoặc file nằm trong thư viện chỉ đọc. 4PDF giúp bạn <strong>tải file Drive bị chặn</strong> bằng cách xuất mỗi trang thành ảnh rồi gộp một file PDF.</p>
-        <h3>Google Drive không cho download là gì?</h3>
-        <p>Khi mở link Drive mà không thấy biểu tượng tải xuống, hoặc gặp thông báo “Bạn không có quyền tải xuống”, file đang ở chế độ chỉ xem. Đây là cài đặt của chủ file, không phải lỗi máy bạn.</p>
-        <h3>Tải PDF, Word, PowerPoint bị chặn tải xuống</h3>
-        <p>Hỗ trợ <strong>pdf · doc · docx · ppt · pptx</strong>. Dù nguồn là PDF hay Word/PowerPoint, file nhận về đều là PDF — đủ trang, đúng thứ tự. Tài liệu cần chia sẻ ở chế độ <em>bất kỳ ai có đường liên kết</em>.</p>
-        <h3>Khác với download file Google Drive bị chặn thủ công</h3>
-        <p>Không cần F12, extension hay sao chép vào Drive cá nhân. Chỉ cần link công khai, không cần đăng nhập Google.</p>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="block" id="cau-hoi">
-      <div class="block-head"><h2>Câu hỏi thường gặp</h2></div>
-      <div class="card">
-        <details><summary>Google Drive không cho download — làm sao tải file?</summary><p>Khi file chỉ cho xem mà không có nút Tải xuống, dán link vào 4PDF. Hệ thống đọc từng trang và gộp thành một file PDF để bạn tải về máy.</p></details>
-        <details><summary>Cách tải file PDF Google Drive bị chặn download?</summary><p>Copy link file PDF trên Drive (dạng <code>drive.google.com/file/d/…/view</code>), dán vào ô trên trang chủ, chọn chất lượng và bấm Bắt đầu tải.</p></details>
-        <details><summary>Tải file Word hoặc PowerPoint bị chặn trên Drive được không?</summary><p>Được. 4PDF hỗ trợ doc, docx, ppt, pptx — file nhận về là PDF ảnh, phù hợp đọc và in khi Drive không cho download gốc.</p></details>
-        <details><summary>File tải về có copy được chữ không?</summary><p>Không. File nhận được là PDF ảnh nên không có lớp văn bản. Muốn copy chữ thì cần dùng thêm phần mềm nhận dạng ký tự (OCR).</p></details>
-        <details><summary>Vì sao ba mức chất lượng cho ra file giống nhau?</summary><p>Vì tài liệu đó là bản quét. Độ phân giải do bản gốc quyết định, không phải do mức bạn chọn.</p></details>
-        <details><summary>Tải một file mất bao lâu?</summary><p>Phụ thuộc số trang. Vài chục trang thường dưới một phút; 150 trang khoảng hai phút.</p></details>
-        <details><summary>Có giới hạn số trang không?</summary><p>Không. Hệ thống tải từng trang theo chỉ số nên số trang nhận được luôn khớp tài liệu gốc.</p></details>
-        <details><summary>Tài liệu cần chia sẻ ở chế độ nào?</summary><p><em>Bất kỳ ai có đường liên kết</em>. Nếu tài liệu giới hạn theo tài khoản cụ thể thì hệ thống không mở được.</p></details>
-      </div>
-    </section>
-  </div>
-</main>
-
-<footer class="foot">
-  <div class="shell foot-inner">
-    <p>4pdf.net — tải file PDF Google Drive bị chặn download.</p>
-    <nav>
-      <a href="#cach-dung">Cách dùng</a>
-      <a href="#chat-luong">Chất lượng</a>
-      <a href="#huong-dan">Hướng dẫn</a>
-      <a href="#cau-hoi">Câu hỏi</a>
-    </nav>
-  </div>
-</footer>
-
-<script>
-/* =========================================================
-   THEME
-   ========================================================= */
-(function(){
-  var btn = document.getElementById('btn-theme');
-  var saved = localStorage.getItem('theme');
-  if(saved === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); btn.textContent='☀️'; }
-  btn.addEventListener('click', function(){
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if(isDark){ document.documentElement.removeAttribute('data-theme'); btn.textContent='🌙'; localStorage.setItem('theme','light'); }
-    else { document.documentElement.setAttribute('data-theme','dark'); btn.textContent='☀️'; localStorage.setItem('theme','dark'); }
-  });
-})();
-
-/* =========================================================
-   HELPERS: parse Google Drive ID
-   ========================================================= */
-function extractDriveId(url){
-  if(!url) return null;
-  url = url.trim();
-  var m;
-  m = url.match(/\/file\/d\/([a-zA-Z0-9_-]{10,})/);      if(m) return m[1];
-  m = url.match(/[?&]id=([a-zA-Z0-9_-]{10,})/);           if(m) return m[1];
-  m = url.match(/\/document\/d\/([a-zA-Z0-9_-]{10,})/);   if(m) return m[1];
-  m = url.match(/\/presentation\/d\/([a-zA-Z0-9_-]{10,})/); if(m) return m[1];
-  m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]{10,})/); if(m) return m[1];
-  return null;
-}
-function detectKind(url){
-  if(/\/document\//.test(url))    return 'doc';
-  if(/\/presentation\//.test(url)) return 'slides';
-  if(/\/spreadsheets\//.test(url)) return 'sheet';
-  return 'file';
-}
-
-/* =========================================================
-   MAIN: xử lý tải
-   Cách hoạt động (client-side, chạy được trên GitHub Pages):
-   - Với file PDF công khai: dùng link tải trực tiếp của Google.
-   - Với Google Docs/Slides/Sheets: dùng endpoint export.
-   - Với file PDF "chỉ xem" (chặn download):
-       Dùng endpoint /preview để nhúng iframe và hướng dẫn người dùng
-       tải qua trình duyệt (không thể vượt qua giới hạn phía server
-       hoàn toàn từ trình duyệt — đây là giới hạn của static hosting).
-   ========================================================= */
-var form       = document.getElementById('convert-form');
-var urlInput   = document.getElementById('url');
-var submitBtn  = document.getElementById('submit-btn');
-var submitText = document.getElementById('submit-text');
-var jobsList   = document.getElementById('jobs-list');
-var pasteBtn   = document.getElementById('paste-url-btn');
-
-pasteBtn.addEventListener('click', async function(){
-  try{
-    var text = await navigator.clipboard.readText();
-    if(text){ urlInput.value = text.trim(); urlInput.focus(); }
-  }catch(e){
-    urlInput.focus();
-  }
-});
-
-function addJob(url){
-  var id = extractDriveId(url);
-  var kind = detectKind(url);
-  var el = document.createElement('div');
-  el.className = 'job';
-  el.innerHTML =
-    '<div class="job-ico">'+
-      '<svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"/><path d="M14 3v5h5"/></svg>'+
-    '</div>'+
-    '<div class="job-body">'+
-      '<div class="job-title">Đang xử lý…</div>'+
-      '<div class="job-sub">Đang kiểm tra link Google Drive</div>'+
-      '<div class="progress"><i></i></div>'+
-    '</div>';
-  jobsList.prepend(el);
-  return el;
-}
-
-function setProgress(el, pct){
-  var bar = el.querySelector('.progress > i');
-  if(bar) bar.style.width = pct + '%';
-}
-
-function finishJob(el, ok, title, sub, downloadUrl, filename){
-  var bar = el.querySelector('.progress');
-  if(bar) bar.remove();
-  el.querySelector('.job-title').textContent = title;
-  var subEl = el.querySelector('.job-sub');
-  subEl.textContent = sub;
-  subEl.className = 'job-sub ' + (ok ? 'ok' : 'err');
-  if(ok && downloadUrl){
-    var a = document.createElement('a');
-    a.className = 'job-dl';
-    a.href = downloadUrl;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    if(filename) a.download = filename;
-    a.textContent = 'Tải về';
-    el.appendChild(a);
-  }
-}
-
-form.addEventListener('submit', async function(e){
-  e.preventDefault();
-  var raw = urlInput.value.trim();
-  if(!raw) return;
-
-  // Cho phép nhiều link cách nhau bởi dấu phẩy / xuống dòng
-  var links = raw.split(/[\s,]+/).filter(Boolean);
-  if(!links.length) return;
-
-  submitBtn.disabled = true;
-  submitText.textContent = 'Đang xử lý…';
-
-  links.forEach(function(link, idx){
-    var el = addJob(link);
-    var id = extractDriveId(link);
-    var kind = detectKind(link);
-
-    if(!id){
-      finishJob(el, false, 'Link không hợp lệ', 'Không tìm thấy ID Google Drive trong URL.', null, null);
-      return;
+      let up = true;
+      alarmInterval = setInterval(() => {
+        if (!audioCtx || !oscillator) return;
+        const now = audioCtx.currentTime;
+        const target = up ? 1200 : 600;
+        oscillator.frequency.linearRampToValueAtTime(target, now + 0.4);
+        up = !up;
+      }, 450);
     }
 
-    // Xác định URL tải phù hợp
-    var dlUrl = null;
-    var fname = 'tai-lieu-' + id.slice(0,6) + '.pdf';
+    function stopAlarm() {
+      if (alarmInterval) clearInterval(alarmInterval);
+      alarmInterval = null;
 
-    if(kind === 'doc'){
-      dlUrl = 'https://docs.google.com/document/d/' + id + '/export?format=pdf';
-      fname = 'tai-lieu-' + id.slice(0,6) + '.pdf';
-    } else if(kind === 'slides'){
-      dlUrl = 'https://docs.google.com/presentation/d/' + id + '/export/pdf';
-      fname = 'slide-' + id.slice(0,6) + '.pdf';
-    } else if(kind === 'sheet'){
-      dlUrl = 'https://docs.google.com/spreadsheets/d/' + id + '/export?format=pdf';
-      fname = 'bang-tinh-' + id.slice(0,6) + '.pdf';
-    } else {
-      // File thường — thử link tải trực tiếp
-      dlUrl = 'https://drive.google.com/uc?export=download&id=' + id;
-      fname = 'file-' + id.slice(0,6);
+      if (oscillator) {
+        try { oscillator.stop(); } catch (e) {}
+        oscillator.disconnect();
+        oscillator = null;
+      }
+
+      if (gainNode) {
+        gainNode.disconnect();
+        gainNode = null;
+      }
+
+      if (audioCtx) {
+        audioCtx.close();
+        audioCtx = null;
+      }
     }
 
-    // Mô phỏng tiến độ kiểm tra (nếu không kiểm tra được do CORS)
-    var p = 0;
-    var timer = setInterval(function(){
-      p += 20;
-      setProgress(el, Math.min(p, 90));
-      if(p >= 100){ clearInterval(timer); }
-    }, 120);
+    document.getElementById("startBtn").addEventListener("click", () => {
+      document.getElementById("overlay").style.display = "flex";
+      startAlarm();
+    });
 
-    // Kiểm tra file có công khai không (dùng fetch HEAD, có thể bị CORS)
-    setTimeout(function(){
-      clearInterval(timer);
-      setProgress(el, 100);
-      setTimeout(function(){
-        finishJob(
-          el,
-          true,
-          'Sẵn sàng tải',
-          'Nếu file được chia sẻ công khai, link tải sẽ hoạt động. Nếu chặn, hãy dùng nút “Mở xem trước”.',
-          dlUrl,
-          fname
-        );
-        // Thêm nút xem trước
-        var preview = document.createElement('a');
-        preview.className = 'job-dl';
-        preview.style.background = 'var(--brand)';
-        preview.style.marginLeft = '6px';
-        preview.href = 'https://drive.google.com/file/d/' + id + '/preview';
-        preview.target = '_blank';
-        preview.rel = 'noopener';
-        preview.textContent = 'Xem trước';
-        el.appendChild(preview);
-      }, 250);
-    }, 700 + idx * 200);
-  });
+    document.getElementById("closeBtn").addEventListener("click", () => {
+      document.getElementById("overlay").style.display = "none";
+      stopAlarm();
+    });
+  </script>
 
-  // Reset nút
-  setTimeout(function(){
-    submitBtn.disabled = false;
-    submitText.textContent = 'Bắt đầu tải';
-    urlInput.value = '';
-  }, 900 + links.length * 250);
-});
-
-/* =========================================================
-   QUALITY UI (đã có radio sẵn — không cần render lại)
-   ========================================================= */
-</script>
 </body>
 </html>
