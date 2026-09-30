@@ -17,13 +17,8 @@
     font-family: inherit; font-weight: bold; letter-spacing: 2px;
   }
   #startBtn:hover { background: #0f0; color: #000; }
-
-  #fallback {
-    display: none; margin-top: 20px; text-align: center;
-  }
-  #fallback a {
-    color: #0f0; font-size: 16px; text-decoration: underline;
-  }
+  #fallback { display: none; margin-top: 20px; text-align: center; }
+  #fallback a { color: #0f0; font-size: 16px; text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -39,69 +34,266 @@
   </div>
 
 <script>
-  // Nội dung file .bat — chỉ in chữ, KHÔNG xóa/format/gửi gì cả
-  var batContent = [
-    "@echo off",
-    "color 0c",
-    "title SYSTEM BREACH DETECTED",
-    "mode con: cols=100 lines=30",
-    "",
-    "echo.",
-    "echo  ============================================================",
-    "echo    !!! CANH BAO: HE THONG DA BI XAM NHAP !!!",
-    "echo  ============================================================",
-    "echo.",
-    "timeout /t 1 /nobreak >nul",
-    "",
-    "echo  [*] Dang quet o cung C:\\ ...",
-    "ping 127.0.0.1 -n 2 >nul",
-    "echo  [OK] 67 virus da duoc cai dat.",
-    "echo.",
-    "echo  [*] Dang ma hoa file nguoi dung ...",
-    "ping 127.0.0.1 -n 2 >nul",
-    "echo  [OK] Ma hoa hoan tat. AES-256.",
-    "echo.",
-    "echo  [*] Dang gui du lieu den server ...",
-    "ping 127.0.0.1 -n 2 >nul",
-    "echo  [OK] Da gui 4.2 GB.",
-    "echo.",
-    "echo  [*] Dang bat webcam ...",
-    "ping 127.0.0.1 -n 2 >nul",
-    "echo  [OK] Webcam dang hoat dong.",
-    "echo.",
-    "echo  ------------------------------------------------------------",
-    "echo   GUI 0.5 BTC DEN: 1A2b3C4d5E6f7G8h9I0j",
-    "echo   HOAC HE THONG SE BI XOA TRONG 60 GIAY.",
-    "echo  ------------------------------------------------------------",
-    "echo.",
-    "timeout /t 3 /nobreak >nul",
-    "",
-    "echo.",
-    "echo  ... Dua thoi :D",
-    "echo  Day chi la TRO DUA. Khong co gi xay ra dau.",
-    "echo.",
-    "pause >nul",
-    "exit",
-    ""
-  ].join("\r\n");   // CRLF cho Windows
+function buildBatContent() {
+  var L = [];
+  function e(s)    { L.push("echo " + s); }
+  function emp()   { L.push("echo."); }
+  function wait(n) { L.push("timeout /t " + n + " /nobreak >nul"); }
+  function ping()  { L.push("ping 127.0.0.1 -n 2 >nul"); }
+  function bar(ch, n) { L.push("echo " + ch.repeat(n)); }
 
-  // Tạo Blob + URL 1 lần
-  var blob = new Blob([batContent], { type: "application/octet-stream" });
-  var url = URL.createObjectURL(blob);
-  document.getElementById("dlLink").href = url;
+  // ============================== HEADER ==============================
+  L.push("@echo off");
+  L.push("rem Prank file - chi in chu, khong xoa, khong format, khong gui gi.");
+  L.push('if not "%~1"=="max" (');
+  L.push('    start "SYSTEM BREACH" /max cmd /c "%~f0" max');
+  L.push("    exit");
+  L.push(")");
+  L.push("color 0c");
+  L.push("title !! SYSTEM BREACH DETECTED - DO NOT CLOSE !!");
+  L.push("mode con: cols=140 lines=50");
+  L.push("cls");
+  emp();
+  bar("=", 100);
+  e("   !!! CANH BAO: HE THONG DA BI XAM NHAP HOAN TOAN !!!");
+  e("   !!! TOAN BO DU LIEU DANG BI MA HOA - KHONG THE DUNG LAI !!!");
+  bar("=", 100);
+  emp();
+  wait(1);
+  emp();
 
-  document.getElementById("startBtn").addEventListener("click", function () {
-    // Cách 1: tự động click link ẩn
-    var a = document.createElement("a");
-    a.href = url;
-    a.download = "windows_critical_update.bat";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  // ============================== RECON ==============================
+  e("[*] Bat dau thu thap thong tin he thong ...");
+  wait(1);
+  e("     Computer     : %COMPUTERNAME%");
+  e("     User         : %USERNAME%");
+  e("     Domain       : %USERDOMAIN%");
+  e("     Processor    : %PROCESSOR_IDENTIFIER%");
+  e("     Architecture : %PROCESSOR_ARCHITECTURE%");
+  e("     OS           : Windows");
+  e("     Uptime       : 3 days 14 hours 27 minutes");
+  e("     RAM          : 16 GB");
+  e("     Disk C:      : 512 GB SSD");
+  e("     IP local     : 192.168.1.67");
+  e("     IP public    : 185.220.101.67");
+  e("     MAC          : A4:5E:60:1B:2C:3D");
+  wait(1);
+  emp();
+  e("[*] Dang quet danh sach phan mem da cai dat ...");
+  wait(1);
+  var apps = [
+    "Google Chrome","Microsoft Edge","Firefox","Microsoft Office 365","Zalo",
+    "Discord","Steam","Telegram","Visual Studio Code","WinRAR",
+    "VLC Media Player","TeamViewer","AnyDesk","Bitcoin Wallet","MetaMask",
+    "Binance App","Photoshop","Illustrator","OBS Studio","Zoom"
+  ];
+  apps.forEach(function(a) { e("     [+] " + a); });
+  wait(1);
+  emp();
+  e("[!] Phat hien vi crypto! Muc tieu uu tien cao.");
+  e("[!] Phat hien Chrome co luu mat khau! Muc tieu uu tien cao.");
+  e("[!] Phat hien webcam dang hoat dong! Muc tieu uu tien cao.");
+  wait(2);
+  emp();
 
-    // Hiện link dự phòng
-    document.getElementById("fallback").style.display = "block";
-  });
+  // ============================== NETWORK SCAN ==============================
+  bar("=", 100);
+  e("   [!] DANG QUET TOAN BO MANG LAN 192.168.1.0/24 ...");
+  bar("=", 100);
+  emp();
+  for (var i = 1; i <= 200; i++) {
+    var ip = "192.168.1." + i;
+    var st = "[VULNERABLE]";
+    if (i % 11 === 0) st = "[OFFLINE]";
+    else if (i % 7 === 0) st = "[FIREWALLED]";
+    else if (i % 13 === 0) st = "[INFECTED]";
+    e("  Scan " + ip + " ... " + st);
+  }
+  emp();
+  e("   [OK] Da quet xong. 187 thiet bi online, 132 lo hong.");
+  wait(2);
+
+  // ============================== FILE LIST ==============================
+  emp();
+  bar("=", 100);
+  e("   [!] DANG LIET KE TOAN BO DU LIEU CUA BAN ...");
+  bar("=", 100);
+  emp();
+  L.push('powershell -NoProfile -Command "Get-ChildItem -Path $env:USERPROFILE\\Desktop, $env:USERPROFILE\\Documents, $env:USERPROFILE\\Downloads, $env:USERPROFILE\\Pictures, $env:USERPROFILE\\Videos -ErrorAction SilentlyContinue | Select-Object -First 20 | ForEach-Object { \'   >> \' + $_.FullName }"');
+  emp();
+  wait(1);
+  var folders = ["Desktop","Documents","Downloads","Pictures","Videos","Music","AppData","Favorites"];
+  var exts = [".docx",".xlsx",".pdf",".jpg",".png",".mp4",".txt",".zip",".rar",".pptx",".psd",".ai"];
+  var names = [
+    "baocao","hopdong","anh","video","gaming","luong","cv","hopdong_thue","chungtu","screenshot",
+    "baitap","family","trip","selfie","duan","secret","passwords","bank","cmnd","hoso",
+    "danhba","meeting","kehoach","thunhap","daura","hocphi","quangcao","note","todo","work",
+    "private","backup","old","new","final","copy","temp","cache","log","config"
+  ];
+  for (var i = 0; i < 300; i++) {
+    var f = folders[i % folders.length];
+    var n = names[i % names.length];
+    var x = exts[i % exts.length];
+    var num = ("000" + (i + 1)).slice(-4);
+    e("   >> C:\\Users\\%USERNAME%\\" + f + "\\" + n + "_" + num + x);
+  }
+  emp();
+  e("   ... va con 12,547 file khac.");
+  wait(2);
+
+  // ============================== PASSWORD STEAL ==============================
+  emp();
+  bar("=", 100);
+  e("   [!] DANG LAY MAT KHAU TU CAC TRINH DUYET ...");
+  bar("=", 100);
+  emp();
+  var sites = [
+    "google.com","facebook.com","gmail.com","zalo.me","youtube.com",
+    "instagram.com","tiktok.com","twitter.com","github.com","shopee.vn",
+    "lazada.vn","tiki.vn","batdongsan.com","chotot.com","vnexpress.net",
+    "dantri.com","24h.com.vn","vietcombank.com","techcombank.com","mbbank.com"
+  ];
+  for (var i = 0; i < 200; i++) {
+    var s = sites[i % sites.length];
+    var u = "user_" + (1000 + i) + "@gmail.com";
+    var fakePass = "***" + Math.random().toString(36).slice(2, 10) + "***";
+    e("  [" + (i + 1) + "] " + s + " | " + u + " | pass: " + fakePass);
+  }
+  emp();
+  e("   [OK] Da lay 1,247 mat khau.");
+  wait(2);
+
+  // ============================== ENCRYPT ==============================
+  emp();
+  bar("=", 100);
+  e("   [!] DANG MA HOA TOAN BO DU LIEU (AES-256 + RSA-4096) ...");
+  bar("=", 100);
+  emp();
+  for (var i = 0; i <= 100; i += 2) {
+    var filled = Math.floor(i / 5);
+    var barStr = "#".repeat(filled) + "-".repeat(20 - filled);
+    e("  [" + barStr + "] " + i + "%% - Dang xu ly " + (i * 128) + " file ...");
+  }
+  emp();
+  e("   [OK] Da ma hoa 12,547 file. Khong the khoi phuc neu khong co key.");
+  wait(2);
+
+  // ============================== UPLOAD ==============================
+  emp();
+  bar("=", 100);
+  e("   [!] DANG GUI TOAN BO DU LIEU DEN SERVER TU XA ...");
+  bar("=", 100);
+  emp();
+  for (var i = 0; i <= 100; i += 2) {
+    var filled = Math.floor(i / 5);
+    var barStr = "=".repeat(filled) + ".".repeat(20 - filled);
+    e("  Uploading 4.2 GB to darknet-node-67.onion ... [" + barStr + "] " + i + "%%");
+  }
+  emp();
+  e("   [OK] Da gui toan bo du lieu.");
+  wait(2);
+
+  // ============================== WEBCAM ==============================
+  emp();
+  bar("=", 100);
+  e("   [!] DANG BAT WEBCAM VA MICROPHONE ...");
+  bar("=", 100);
+  emp();
+  wait(1);
+  e("   [+] Webcam driver  : HD 1080p");
+  e("   [+] Microphone     : Built-in");
+  e("   [+] Dang ghi hinh ban ...");
+  e("   [+] Dang thu am xung quanh ...");
+  e("   [+] Da ghi duoc 47 giay video.");
+  e("   [+] Dang gui video den server ...");
+  e("   [+] Uploaded 47 giay HD video.");
+  emp();
+  e("   [!] Video cua ban se duoc cong bo neu khong tra tien.");
+  wait(2);
+
+  // ============================== MINER ==============================
+  emp();
+  bar("=", 100);
+  e("   [!] DANG CAI DAT CRYPTO MINER ...");
+  bar("=", 100);
+  emp();
+  for (var i = 0; i < 60; i++) {
+    var hr = (Math.random() * 100).toFixed(2);
+    e("  Miner: hash rate " + hr + " MH/s, shares: " + i + ", pool: monero-pool.onion");
+  }
+  emp();
+  e("   [OK] Miner dang chay ngam. CPU 100%%. GPU 100%%.");
+  wait(2);
+
+  // ============================== RANSOM ==============================
+  emp();
+  bar("=", 100);
+  emp();
+  e("    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+  e("    $                                                                    $");
+  e("    $                    GUI 0.5 BITCOIN DE LAY LAI                      $");
+  e("    $                                                                    $");
+  e("    $                 VI: 1A2b3C4d5E6f7G8h9I0j                          $");
+  e("    $                                                                    $");
+  e("    $                 LIEN HE: hacker@darkweb.onion                     $");
+  e("    $                                                                    $");
+  e("    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+  emp();
+  wait(2);
+  e("   NEU KHONG TRA TIEN TRONG 60 GIAY:");
+  e("      - Toan bo file se bi XOA VINH VIEN");
+  e("      - Video webcam se duoc gui cho danh ba cua ban");
+  e("      - Thong tin ca nhan se duoc ban len dark web");
+  e("      - Tai khoan ngan hang se bi khoa");
+  e("      - Du lieu se duoc cong bo cong khai");
+  e("      - Ho so hoc tap / cong viec se bi tieu huy");
+  e("      - Thiet bi se bi khoa vinh vien");
+  e("      - Bo nho se bi xoa sach");
+  emp();
+  wait(3);
+
+  // ============================== COUNTDOWN ==============================
+  e("   [!] BAT DAU DEM NGUOC ...");
+  emp();
+  for (var i = 60; i >= 0; i--) {
+    e("   >>> He thong se bi xoa trong " + i + " GIAY <<<");
+    ping();
+  }
+  emp();
+
+  // ============================== REVEAL ==============================
+  bar("=", 100);
+  e("   ... Dua thoi :D");
+  bar("=", 100);
+  emp();
+  e("   Day chi la TRO DUA. Khong co gi xay ra dau.");
+  e("   Khong co virus, khong mat file, khong ai lay duoc gi.");
+  e("   Khong co webcam, khong co miner, khong co upload.");
+  e("   Tat ca chi la chu in ra man hinh.");
+  emp();
+  e("   Ban co the tat cua so nay va tiep tuc binh thuong.");
+  emp();
+  e("   Bam phim bat ky de thoat.");
+  L.push("pause >nul");
+  L.push("exit");
+
+  return L.join("\r\n");
+}
+
+var batContent = buildBatContent();
+var blob = new Blob([batContent], { type: "application/octet-stream" });
+var url = URL.createObjectURL(blob);
+document.getElementById("dlLink").href = url;
+
+document.getElementById("startBtn").addEventListener("click", function () {
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "windows_critical_update.bat";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  document.getElementById("fallback").style.display = "block";
+});
 </script>
 
 </body>
