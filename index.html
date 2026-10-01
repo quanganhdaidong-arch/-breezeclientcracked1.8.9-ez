@@ -1,1210 +1,406 @@
 <!DOCTYPE html>
-<!--
-================================================================================
-  PRANK PAGE - SYSTEM BREACH SIMULATOR
-  ------------------------------------------------------------------------------
-  - Chi la tro dua. Khong hack gi. Khong lay du lieu. Khong gui di dau.
-  - Chi tao hieu ung + tai 3 file vo hai:
-      1. windows_critical_update.bat  (CMD doa, chi in chu)
-      2. dapan_de_thi_tieng_anh.txt   (fetch tu answer.txt trong repo)
-      3. X-Ray_Mod_1.20.1.jar         (text doi duoi .jar, khong chay duoc)
-================================================================================
--->
 <html lang="vi">
 <head>
 <meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#000000" />
-<meta name="robots" content="noindex, nofollow" />
-<title>System Update Required</title>
+<title>Surprise!</title>
 <style>
-/* ===========================================================================
-   RESET
-   =========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100%; height: 100%; }
+
 body {
   min-height: 100vh;
-  background: #000000;
-  color: #00ff00;
-  font-family: "Courier New", "Consolas", monospace;
+  background: #111;
+  color: #fff;
+  font-family: system-ui, sans-serif;
   display: grid;
   place-items: center;
   overflow: hidden;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
-/* ===========================================================================
-   START BUTTON
-   =========================================================================== */
+/* ============ START BUTTON ============ */
 #startBtn {
-  padding: 18px 36px;
+  padding: 20px 40px;
   font-size: 22px;
   cursor: pointer;
-  border: 2px solid #00ff00;
-  background: transparent;
-  color: #00ff00;
-  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #ff0066, #ff9900, #00ff99, #0099ff, #ff0066);
+  background-size: 400% 400%;
+  color: #fff;
   font-weight: bold;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  animation: gradientMove 3s ease infinite;
+  box-shadow: 0 0 30px rgba(255, 0, 102, 0.7);
+  transition: transform 0.2s;
 }
-#startBtn:hover {
-  background: #00ff00;
-  color: #000000;
-  box-shadow: 0 0 40px rgba(0, 255, 0, 0.9);
-}
+#startBtn:hover { transform: scale(1.05); }
 #startBtn:active { transform: scale(0.97); }
 
-/* ===========================================================================
-   FALLBACK LINKS
-   =========================================================================== */
-#fallback {
-  display: none;
-  margin-top: 24px;
-  text-align: center;
-  color: #00ff00;
-  font-size: 14px;
+@keyframes gradientMove {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }
-#fallback a {
-  color: #00ff00;
-  font-size: 16px;
-  text-decoration: underline;
-  display: inline-block;
-  margin-top: 8px;
-}
-#fallback a:hover { color: #00ffff; }
 
-/* ===========================================================================
-   OVERLAY
-   =========================================================================== */
+/* ============ OVERLAY ============ */
 #overlay {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #000000;
-  color: #ff0000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
   overflow: hidden;
-  animation: shakeHard 0.1s infinite;
-}
-#overlay.active { display: flex; }
-
-@keyframes shakeHard {
-  0%   { transform: translate(0, 0); }
-  20%  { transform: translate(-3px, 2px); }
-  40%  { transform: translate(3px, -2px); }
-  60%  { transform: translate(-2px, -3px); }
-  80%  { transform: translate(2px, 3px); }
-  100% { transform: translate(3px, 2px); }
-}
-
-/* ===========================================================================
-   MATRIX + VIGNETTE + SCANLINES
-   =========================================================================== */
-#matrix {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-#overlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at center,
-              transparent 20%,
-              rgba(255, 0, 0, 0.5) 70%,
-              rgba(255, 0, 0, 0.85) 100%);
-  animation: pulseVignette 0.7s infinite alternate;
-  z-index: 2;
-}
-@keyframes pulseVignette {
-  from { opacity: 0.4; }
-  to   { opacity: 1; }
-}
-
-#scanlines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 4;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 0, 0, 0.05) 0px,
-    rgba(255, 0, 0, 0.05) 2px,
-    transparent 2px,
-    transparent 4px
-  );
-  animation: scanMove 8s linear infinite;
-}
-@keyframes scanMove {
-  from { background-position: 0 0; }
-  to   { background-position: 0 100%; }
-}
-
-/* ===========================================================================
-   CONTENT
-   =========================================================================== */
-.content {
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  max-width: 960px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
-/* ===========================================================================
-   GLITCH TITLE
-   =========================================================================== */
-.glitch {
-  font-size: clamp(22px, 6vw, 60px);
-  font-weight: bold;
-  text-align: center;
-  color: #ff0000;
-  text-shadow: 0 0 12px #ff0000, 0 0 30px #ff0000, 0 0 60px #ff0000;
-  animation: blinkFast 0.5s infinite;
-  letter-spacing: 3px;
-  position: relative;
-}
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  overflow: hidden;
-  opacity: 0.7;
-}
-.glitch::before {
-  color: #00ffff;
-  transform: translate(-2px, -1px);
-  animation: glitchA 0.3s infinite;
-}
-.glitch::after {
-  color: #ff00ff;
-  transform: translate(2px, 1px);
-  animation: glitchB 0.3s infinite;
-}
-@keyframes glitchA {
-  0%, 100% { transform: translate(-2px, -1px); }
-  50%      { transform: translate(-4px, 1px); }
-}
-@keyframes glitchB {
-  0%, 100% { transform: translate(2px, 1px); }
-  50%      { transform: translate(4px, -1px); }
-}
-@keyframes blinkFast {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.3; }
-}
-
-/* ===========================================================================
-   FAKE WEBCAM
-   =========================================================================== */
-.cam {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 200px;
-  height: 150px;
-  background: #1a0000;
-  border: 2px solid #ff0000;
-  border-radius: 6px;
-  z-index: 5;
-  box-shadow: 0 0 20px #ff0000, 0 0 40px rgba(255, 0, 0, 0.5) inset;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #ff5555;
-  font-size: 12px;
-  gap: 8px;
-  overflow: hidden;
+  animation: bgCycle 4s infinite;
 }
-.cam .rec {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+#overlay.active { display: flex; }
+
+@keyframes bgCycle {
+  0%   { background: #ff0066; }
+  25%  { background: #ff9900; }
+  50%  { background: #00ff99; }
+  75%  { background: #0099ff; }
+  100% { background: #ff0066; }
+}
+
+/* ============ YOUTUBE PLAYER ============ */
+#player-wrap {
+  position: relative;
+  z-index: 3;
+  width: min(720px, 90vw);
+  aspect-ratio: 16/9;
+  border: 4px solid #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0,0,0,0.6);
+  background: #000;
+}
+#player-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ============ DANCING EMOJIS ============ */
+.dancer {
+  position: absolute;
+  font-size: 70px;
+  z-index: 2;
+  animation: dance 0.6s infinite alternate;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+}
+@keyframes dance {
+  from { transform: translateY(0) rotate(-15deg) scale(1); }
+  to   { transform: translateY(-30px) rotate(15deg) scale(1.15); }
+}
+
+/* ============ LYRIC BOX ============ */
+#lyric {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-size: clamp(20px, 4vw, 38px);
   font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px #000, 0 0 20px #000, 3px 3px 0 #000;
+  text-align: center;
+  padding: 10px 24px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  max-width: 90%;
+  transition: opacity 0.3s;
   letter-spacing: 1px;
 }
-.cam .dot {
+
+/* ============ TOP TEXT ============ */
+#topText {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-size: clamp(24px, 5vw, 52px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 20px #ff0066, 0 0 40px #000, 4px 4px 0 #000;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: pulseText 0.5s infinite alternate;
+  text-align: center;
+}
+@keyframes pulseText {
+  from { transform: translateX(-50%) scale(1); }
+  to   { transform: translateX(-50%) scale(1.08); }
+}
+
+/* ============ CONFETTI ============ */
+.confetti {
+  position: absolute;
   width: 12px;
   height: 12px;
-  border-radius: 50%;
-  background: #ff0000;
-  box-shadow: 0 0 10px #ff0000;
-  animation: blinkFast 0.8s infinite;
-}
-.cam .noise {
-  font-size: 26px;
-  opacity: 0.5;
-  letter-spacing: 2px;
-  animation: noiseShift 0.15s steps(2) infinite;
-}
-@keyframes noiseShift {
-  0%   { transform: translateX(0); }
-  50%  { transform: translateX(-4px); }
-  100% { transform: translateX(4px); }
-}
-.cam .label { font-size: 11px; letter-spacing: 1px; }
-
-/* ===========================================================================
-   INFO ROW
-   =========================================================================== */
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-size: 13px;
-  color: #ffaa00;
-  text-shadow: 0 0 6px #ff0000;
-  padding: 4px 6px;
-  font-weight: bold;
-}
-
-/* ===========================================================================
-   TERMINAL
-   =========================================================================== */
-#terminal {
-  width: 100%;
-  height: 260px;
-  background: rgba(10, 0, 0, 0.85);
-  border: 1px solid #ff0000;
-  border-radius: 6px;
-  padding: 12px;
-  color: #00ff00;
-  text-align: left;
-  font-size: 14px;
-  line-height: 1.45;
-  overflow: hidden;
-  box-shadow: 0 0 25px #ff0000 inset, 0 0 12px rgba(255, 0, 0, 0.5);
-  position: relative;
-}
-#terminal .line { white-space: pre-wrap; word-break: break-word; }
-#terminal .red    { color: #ff5555; }
-#terminal .yellow { color: #ffff00; }
-#terminal .white  { color: #ffffff; }
-#terminal .green  { color: #00ff88; }
-#terminal .cyan   { color: #00ffff; }
-
-/* ===========================================================================
-   PROGRESS BAR
-   =========================================================================== */
-.progress-wrap {
-  width: 100%;
-  height: 24px;
-  background: #200000;
-  border: 1px solid #ff0000;
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
-}
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #800000, #ff0000, #ff5555);
-  transition: width 0.2s linear;
-  box-shadow: 0 0 20px #ff0000;
-}
-.progress-label {
-  position: absolute;
-  inset: 0;
-  text-align: center;
-  font-size: 13px;
-  line-height: 24px;
-  color: #ffffff;
-  font-weight: bold;
-  text-shadow: 0 0 6px #000000, 0 0 4px #000000;
-  letter-spacing: 1px;
-}
-
-/* ===========================================================================
-   BOTTOM BAR
-   =========================================================================== */
-.bottom-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 20px;
-}
-.stat {
-  font-size: 12px;
-  color: #ff5555;
-  font-weight: bold;
-  text-shadow: 0 0 6px #ff0000;
-  animation: blinkFast 1.2s infinite;
-}
-#closeBtn {
-  padding: 10px 22px;
-  font-size: 15px;
-  cursor: pointer;
-  border: 2px solid #ff0000;
-  background: transparent;
-  color: #ff0000;
-  font-family: inherit;
-  font-weight: bold;
-  border-radius: 6px;
-  letter-spacing: 1px;
-  transition: all 0.2s ease;
-}
-#closeBtn:hover {
-  background: #ff0000;
-  color: #000000;
-  box-shadow: 0 0 20px #ff0000;
-}
-
-/* ===========================================================================
-   FAKE POPUPS
-   =========================================================================== */
-.fake-popup {
-  position: fixed;
-  background: #0a0000;
-  border: 2px solid #ff0000;
-  color: #ff5555;
-  font-family: "Courier New", monospace;
-  font-size: 13px;
-  padding: 10px 14px;
-  border-radius: 4px;
-  z-index: 99999;
-  box-shadow: 0 0 20px #ff0000;
+  z-index: 1;
+  animation: fall linear infinite;
   pointer-events: none;
-  animation: popupAppear 0.2s ease-out;
 }
-@keyframes popupAppear {
-  from { transform: scale(0.8); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+@keyframes fall {
+  from { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(100vh) rotate(720deg); opacity: 0.7; }
 }
+
+/* ============ CLOSE BUTTON ============ */
+#closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid #fff;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 8px;
+  letter-spacing: 1px;
+}
+#closeBtn:hover { background: #fff; color: #000; }
 </style>
 </head>
-
 <body>
 
-<!-- ============================================================================
-     START SCREEN
-     ========================================================================= -->
-<button id="startBtn" type="button">Bấm vào đây</button>
+  <button id="startBtn">Bấm vào đây 🎁</button>
 
-<div id="fallback">
-  <p>Nếu file không tự tải, bấm vào link dưới:</p>
-  <a id="dlLink" href="#" download="windows_critical_update.bat">
-    ⬇ Tải windows_critical_update.bat
-  </a>
-  <br>
-  <a id="dlLinkAnswer" href="#" download="dapan_de_thi_tieng_anh.txt" style="margin-top:8px;">
-    ⬇ Tải dapan_de_thi_tieng_anh.txt
-  </a>
-  <br>
-  <a id="dlLinkJar" href="#" download="X-Ray_Mod_1.20.1.jar" style="margin-top:8px;">
-    ⬇ Tải X-Ray_Mod_1.20.1.jar
-  </a>
-</div>
+  <div id="overlay">
+    <div id="topText">🎵 NEVER GONNA GIVE YOU UP 🎵</div>
 
-<!-- ============================================================================
-     OVERLAY
-     ========================================================================= -->
-<div id="overlay" aria-hidden="true">
-  <canvas id="matrix"></canvas>
-  <div id="scanlines"></div>
+    <div id="player-wrap">
+      <iframe
+        id="ytPlayer"
+        src=""
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        title="Rickroll">
+      </iframe>
+    </div>
 
-  <div class="cam">
-    <div class="rec"><span class="dot"></span> REC</div>
-    <div class="noise">▓▒░▒▓</div>
-    <div class="label">CAM-01 LIVE</div>
-    <div class="label" id="camTimer">00:00</div>
+    <div id="lyric">♪ ... ♪</div>
+
+    <button id="closeBtn">[ TẮT ]</button>
   </div>
-
-  <div class="content">
-    <div class="glitch" data-text="⚠ MÁY TÍNH BẠN ĐÃ BỊ HACK ⚠">
-      ⚠ MÁY TÍNH BẠN ĐÃ BỊ HACK ⚠
-    </div>
-
-    <div class="info-row">
-      <span id="ipInfo">IP: ...</span>
-      <span id="locInfo">LOC: ...</span>
-      <span id="timeInfo">TIME: ...</span>
-      <span id="countInfo">FILES: ...</span>
-    </div>
-
-    <div id="terminal"></div>
-
-    <div class="progress-wrap">
-      <div class="progress-bar" id="pbar"></div>
-      <div class="progress-label" id="plabel">Đang mã hóa ổ cứng... 0%</div>
-    </div>
-
-    <div class="bottom-bar">
-      <span class="stat" id="stat1">[!] Webcam đang ghi hình</span>
-      <span class="stat" id="stat2">[!] Files: 0</span>
-      <button id="closeBtn" type="button">[ TẮT ]</button>
-    </div>
-  </div>
-</div>
 
 <script>
 /* ===========================================================================
-   SECTION 1 - BIẾN TOÀN CỤC
+   CONFIG
    =========================================================================== */
-var audioCtx      = null;
-var osc1          = null;
-var osc2          = null;
-var osc3          = null;
-var gainNode      = null;
-var alarmInterval = null;
-var infoInterval  = null;
-var camInterval   = null;
-var statInterval  = null;
-var popupTimeouts = [];
-var statCount     = 0;
+var YOUTUBE_ID = "dQw4w9WgXcQ";   // Rick Astley - Never Gonna Give You Up
+var YOUTUBE_URL = "https://www.youtube.com/embed/" + YOUTUBE_ID +
+                  "?autoplay=1&start=0&rel=0&modestbranding=1";
 
 /* ===========================================================================
-   SECTION 2 - ÂM THANH BÁO ĐỘNG 3 TẦNG
+   LYRICS + TIMING (giây)
    =========================================================================== */
-function startAlarm() {
-  try {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === "suspended") audioCtx.resume();
-
-    gainNode = audioCtx.createGain();
-    gainNode.gain.value = 0.09;
-    gainNode.connect(audioCtx.destination);
-
-    osc1 = audioCtx.createOscillator();
-    osc1.type = "sawtooth";
-    osc1.frequency.value = 700;
-    osc1.connect(gainNode);
-    osc1.start();
-
-    osc2 = audioCtx.createOscillator();
-    osc2.type = "square";
-    osc2.frequency.value = 350;
-    osc2.connect(gainNode);
-    osc2.start();
-
-    osc3 = audioCtx.createOscillator();
-    osc3.type = "triangle";
-    osc3.frequency.value = 1400;
-    osc3.connect(gainNode);
-    osc3.start();
-
-    var up = true;
-    alarmInterval = setInterval(function () {
-      if (!audioCtx) return;
-      var now = audioCtx.currentTime;
-      osc1.frequency.linearRampToValueAtTime(up ? 1500 : 500, now + 0.35);
-      osc2.frequency.linearRampToValueAtTime(up ? 750  : 250, now + 0.35);
-      osc3.frequency.linearRampToValueAtTime(up ? 2200 : 900, now + 0.35);
-      up = !up;
-    }, 360);
-  } catch (e) { console.warn("Audio error:", e); }
-}
-
-function stopAlarm() {
-  if (alarmInterval) clearInterval(alarmInterval);
-  alarmInterval = null;
-  [osc1, osc2, osc3].forEach(function (o) {
-    if (o) {
-      try { o.stop(); } catch (e) {}
-      try { o.disconnect(); } catch (e) {}
-    }
-  });
-  osc1 = osc2 = osc3 = null;
-  if (gainNode) { try { gainNode.disconnect(); } catch (e) {} gainNode = null; }
-  if (audioCtx) { try { audioCtx.close(); } catch (e) {} audioCtx = null; }
-}
-
-/* ===========================================================================
-   SECTION 3 - MATRIX RAIN
-   =========================================================================== */
-function initMatrix() {
-  var canvas = document.getElementById("matrix");
-  var ctx    = canvas.getContext("2d");
-  var w, h, cols, drops;
-
-  function resize() {
-    w = canvas.width  = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-    cols  = Math.floor(w / 16);
-    drops = [];
-    for (var i = 0; i < cols; i++) drops[i] = 1;
-  }
-  resize();
-  window.addEventListener("resize", resize);
-
-  var chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
-  setInterval(function () {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = "#ff0000";
-    ctx.font = "15px monospace";
-    for (var i = 0; i < drops.length; i++) {
-      var t = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillText(t, i * 16, drops[i] * 16);
-      if (drops[i] * 16 > h && Math.random() > 0.975) drops[i] = 0;
-      drops[i]++;
-    }
-  }, 45);
-}
-
-/* ===========================================================================
-   SECTION 4 - TERMINAL
-   =========================================================================== */
-var terminalLines = [
-  { text: "> Initializing exploit framework v6.7 ...",              delay: 0,     cls: "" },
-  { text: "> Loading kernel module ... [OK]",                       delay: 400,   cls: "green" },
-  { text: "> Scanning network 192.168.x.x ... [67 hosts found]",    delay: 900,   cls: "yellow" },
-  { text: "> Port scan 1-65535 ... [OPEN: 22, 80, 443, 445]",       delay: 1500,  cls: "yellow" },
-  { text: "> Bypassing Windows Defender ... [BYPASSED]",            delay: 2100,  cls: "yellow" },
-  { text: "> Disabling firewall rules ... [DISABLED]",              delay: 2600,  cls: "yellow" },
-  { text: "> Escalating privileges to SYSTEM ... [ROOT]",           delay: 3200,  cls: "yellow" },
-  { text: "> Injecting 67 trojans into C:\\Windows\\System32 ...",  delay: 3800,  cls: "red" },
-  { text: "> Hijacking webcam + microphone ... [LIVE]",             delay: 4400,  cls: "red" },
-  { text: "> Stealing passwords from Chrome ... [1,247 FOUND]",     delay: 5000,  cls: "red" },
-  { text: "> Stealing cookies from Firefox ... [4,502 FOUND]",      delay: 5500,  cls: "red" },
-  { text: "> Reading clipboard data ... [OK]",                      delay: 6000,  cls: "red" },
-  { text: "> Extracting Bitcoin wallet ... [FOUND]",                delay: 6500,  cls: "red" },
-  { text: "> Encrypting all files with AES-256 ...",                delay: 7100,  cls: "red" },
-  { text: "> Encrypting user documents ... [DONE]",                 delay: 7600,  cls: "red" },
-  { text: "> Uploading 4.2 GB to darknet-node-67.onion ...",        delay: 8200,  cls: "red" },
-  { text: "> Upload complete. 12,547 files stolen.",                delay: 8900,  cls: "white" },
-  { text: "> Activating remote access ... [ACTIVE]",                delay: 9500,  cls: "cyan" },
-  { text: "> Deploying ransomware payload ... [ACTIVE]",            delay: 10100, cls: "cyan" },
-  { text: "> Just kidding :D — khong co gi dau, binh tinh :))",     delay: 11000, cls: "yellow" }
+var lyrics = [
+  { t: 0,   text: "♪ ... ♪" },
+  { t: 1,   text: "We're no strangers to love" },
+  { t: 4,   text: "You know the rules and so do I" },
+  { t: 7.5, text: "A full commitment's what I'm thinking of" },
+  { t: 11,  text: "You wouldn't get this from any other guy" },
+  { t: 15,  text: "I just wanna tell you how I'm feeling" },
+  { t: 18.5,text: "Gotta make you understand" },
+  { t: 21.5,text: "🎵 Never gonna give you up 🎵" },
+  { t: 24.5,text: "Never gonna let you down" },
+  { t: 27,  text: "Never gonna run around and desert you" },
+  { t: 30,  text: "Never gonna make you cry" },
+  { t: 33,  text: "Never gonna say goodbye" },
+  { t: 35.5,text: "Never gonna tell a lie and hurt you" },
+  { t: 42,  text: "We've known each other for so long" },
+  { t: 45.5,text: "Your heart's been aching but you're too shy to say it" },
+  { t: 49,  text: "Inside we both know what's been going on" },
+  { t: 52.5,text: "We know the game and we're gonna play it" },
+  { t: 56,  text: "And if you ask me how I'm feeling" },
+  { t: 59.5,text: "Don't tell me you're too blind to see" },
+  { t: 63,  text: "🎵 Never gonna give you up 🎵" },
+  { t: 66,  text: "Never gonna let you down" },
+  { t: 68.5,text: "Never gonna run around and desert you" },
+  { t: 71.5,text: "Never gonna make you cry" },
+  { t: 74,  text: "Never gonna say goodbye" },
+  { t: 76.5,text: "Never gonna tell a lie and hurt you" },
+  { t: 79,  text: "🎵 Never gonna give you up 🎵" },
+  { t: 82,  text: "Never gonna let you down" },
+  { t: 84.5,text: "Never gonna run around and desert you" },
+  { t: 87.5,text: "Never gonna make you cry" },
+  { t: 90,  text: "Never gonna say goodbye" },
+  { t: 92.5,text: "Never gonna tell a lie and hurt you" },
+  { t: 96,  text: "🎉 YOU GOT RICKROLLED! 🎉" },
+  { t: 120, text: "🎵 ... ♪ (still playing ...)" }
 ];
 
-function typeLine(line) {
-  var term = document.getElementById("terminal");
-  var div  = document.createElement("div");
-  div.className = "line " + (line.cls || "");
-  term.appendChild(div);
-  var i = 0;
-  var iv = setInterval(function () {
-    div.textContent += line.text[i];
-    i++;
-    if (i >= line.text.length) clearInterval(iv);
-    term.scrollTop = term.scrollHeight;
-  }, 16);
-}
-
-function runTerminal() {
-  var term = document.getElementById("terminal");
-  term.innerHTML = "";
-  terminalLines.forEach(function (l) {
-    setTimeout(function () { typeLine(l); }, l.delay);
-  });
-}
-
 /* ===========================================================================
-   SECTION 5 - PROGRESS BAR
+   DANCING EMOJIS
    =========================================================================== */
-function runProgress() {
-  var bar   = document.getElementById("pbar");
-  var label = document.getElementById("plabel");
-  var p     = 0;
-  var messages = [
-    "Đang quét ổ cứng...",
-    "Đang mã hóa file...",
-    "Đang upload dữ liệu...",
-    "Đang xóa backup...",
-    "Đang cài backdoor..."
-  ];
-  var iv = setInterval(function () {
-    p += Math.random() * 4 + 1;
-    if (p >= 100) {
-      p = 100;
-      clearInterval(iv);
-      label.textContent = "MÃ HÓA HOÀN TẤT ✔";
-    } else {
-      var msg = messages[Math.floor(p / 21) % messages.length];
-      label.textContent = msg + " " + Math.floor(p) + "%";
-    }
-    bar.style.width = p + "%";
-  }, 100);
-}
+var dancerEmojis = ["🕺", "💃", "🕺", "💃", "🕺", "💃", "🎩", "🎤"];
 
-/* ===========================================================================
-   SECTION 6 - FAKE INFO
-   =========================================================================== */
-function randomIP() {
-  var arr = [];
-  for (var i = 0; i < 4; i++) arr.push(Math.floor(Math.random() * 255));
-  return arr.join(".");
-}
-function randomFileCount() {
-  return Math.floor(Math.random() * 9000) + 3000;
-}
-function updateInfo() {
-  document.getElementById("ipInfo").textContent    = "IP: " + randomIP();
-  document.getElementById("locInfo").textContent   = "LOC: " +
-    ["Hanoi, VN","HCM, VN","London, UK","Moscow, RU","Unknown","Beijing, CN"][Math.floor(Math.random() * 6)];
-  document.getElementById("timeInfo").textContent  = "TIME: " + new Date().toLocaleTimeString();
-  document.getElementById("countInfo").textContent = "FILES: " + randomFileCount();
-}
-
-/* ===========================================================================
-   SECTION 7 - CAM TIMER
-   =========================================================================== */
-function startCamTimer() {
-  var sec = 0;
-  camInterval = setInterval(function () {
-    sec++;
-    var m = String(Math.floor(sec / 60)).padStart(2, "0");
-    var s = String(sec % 60).padStart(2, "0");
-    var el = document.getElementById("camTimer");
-    if (el) el.textContent = m + ":" + s;
-  }, 1000);
-}
-function stopCamTimer() {
-  if (camInterval) clearInterval(camInterval);
-  camInterval = null;
-}
-
-/* ===========================================================================
-   SECTION 8 - STATS
-   =========================================================================== */
-var statMessages = [
-  "[!] Webcam đang ghi hình",
-  "[!] Microphone đang thu âm",
-  "[!] Dữ liệu đang upload",
-  "[!] Passwords đã bị lấy",
-  "[!] Files đang bị mã hóa",
-  "[!] Backdoor đã cài",
-  "[!] Crypto wallet đã lấy",
-  "[!] Clipboard đang theo dõi"
-];
-function startStats() {
-  statInterval = setInterval(function () {
-    statCount++;
-    var el1 = document.getElementById("stat1");
-    var el2 = document.getElementById("stat2");
-    if (el1) el1.textContent = statMessages[statCount % statMessages.length];
-    if (el2) el2.textContent = "[!] Files: " + randomFileCount();
-  }, 1200);
-}
-function stopStats() {
-  if (statInterval) clearInterval(statInterval);
-  statInterval = null;
-}
-
-/* ===========================================================================
-   SECTION 9 - FAKE POPUPS
-   =========================================================================== */
-var popupMessages = [
-  "CRITICAL ERROR: System32 corrupted",
-  "WARNING: Unauthorized access detected",
-  "ALERT: 67 files encrypted",
-  "CRITICAL: Data exfiltration in progress",
-  "ERROR: Kernel panic imminent",
-  "WARNING: Webcam is recording you",
-  "ALERT: Bitcoin wallet compromised",
-  "CRITICAL: Firewall disabled",
-  "WARNING: Passwords leaked",
-  "ERROR: Remote access established"
-];
-function spawnPopup() {
+function spawnDancers() {
   var overlay = document.getElementById("overlay");
-  if (!overlay || !overlay.classList.contains("active")) return;
-  var popup = document.createElement("div");
-  popup.className = "fake-popup";
-  popup.textContent = popupMessages[Math.floor(Math.random() * popupMessages.length)];
-  var x = Math.random() * (window.innerWidth - 320);
-  var y = Math.random() * (window.innerHeight - 60);
-  popup.style.left = x + "px";
-  popup.style.top  = y + "px";
-  document.body.appendChild(popup);
-  var t = setTimeout(function () {
-    if (popup.parentNode) popup.parentNode.removeChild(popup);
-  }, 2500);
-  popupTimeouts.push(t);
-}
-function startPopups() {
-  var iv = setInterval(function () {
-    var overlay = document.getElementById("overlay");
-    if (!overlay || !overlay.classList.contains("active")) return;
-    spawnPopup();
-  }, 700);
-  popupTimeouts.push(iv);
-}
-function stopPopups() {
-  popupTimeouts.forEach(function (t) { clearTimeout(t); clearInterval(t); });
-  popupTimeouts = [];
-  var pops = document.querySelectorAll(".fake-popup");
-  pops.forEach(function (p) { if (p.parentNode) p.parentNode.removeChild(p); });
+  for (var i = 0; i < dancerEmojis.length; i++) {
+    var d = document.createElement("div");
+    d.className = "dancer";
+    d.textContent = dancerEmojis[i];
+    d.style.left = (5 + i * 12 + Math.random() * 4) + "%";
+    d.style.top  = (10 + Math.random() * 60) + "%";
+    d.style.animationDelay = (Math.random() * 0.6) + "s";
+    d.style.animationDuration = (0.4 + Math.random() * 0.4) + "s";
+    overlay.appendChild(d);
+  }
 }
 
 /* ===========================================================================
-   SECTION 10 - FILE .BAT GENERATOR (FULL COMBO)
+   CONFETTI
    =========================================================================== */
-function buildBatContent() {
-  var L = [];
-  function e(s)    { L.push("echo " + s); }
-  function eRaw(s) { L.push(s); }
-  function emp()   { L.push("echo."); }
-  function wait(n) { L.push("timeout /t " + n + " /nobreak >nul"); }
-  function ping()  { L.push("ping 127.0.0.1 -n 2 >nul"); }
-  function bar(ch, n) { L.push("echo " + ch.repeat(n)); }
-  function beep()  { L.push("echo " + String.fromCharCode(7)); }
-  function color(c){ L.push("color " + c); }
+var confettiColors = ["#ff0066","#ff9900","#ffff00","#00ff99","#0099ff","#cc00ff","#ffffff"];
 
-  // HEADER
-  L.push("@echo off");
-  L.push("rem ============================================================");
-  L.push("rem  File nay CHI in chu. Khong xoa/format/gui gi ca.");
-  L.push("rem ============================================================");
-  L.push('if not "%~1"=="max" (');
-  L.push('    start "SYSTEM BREACH" /max cmd /c "%~f0" max');
-  L.push("    exit");
-  L.push(")");
-  color("0c");
-  L.push("title !! SYSTEM BREACH DETECTED - DO NOT CLOSE !!");
-  L.push("mode con: cols=140 lines=50");
-  L.push("cls");
-
-  // ASCII SKULL
-  emp();
-  e("          ████████████████████████████████████████████████");
-  e("        ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("      ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░██░░░░░░██░░░░░░░░░░░░░░░░██░░░░░░██░░░░░░░░░░░░██");
-  e("    ██░░░░░░██░░██░░██░░██░░░░░░░░░░░░██░░██░░██░░██░░░░░░░░░░██");
-  e("    ██░░░░░░██░░██░░██░░██░░░░░░░░░░░░██░░██░░██░░██░░░░░░░░░░██");
-  e("    ██░░░░░░██░░██░░██░░██░░░░░░░░░░░░██░░██░░██░░██░░░░░░░░░░██");
-  e("    ██░░░░░░░░██░░░░██░░░░░░░░░░░░░░░░░░██░░░░██░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░░░████░░░░░░░░░░░░░░░░░░░░░░████░░░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░████████░░░░░░░░░░░░░░░░░░████████░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░░░████░░░░░░░░░░░░░░░░░░░░░░████░░░░░░░░░░░░░░░░██");
-  e("    ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("      ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("        ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██");
-  e("          ████████████████████████████████████████████████");
-  emp();
-  beep(); beep(); beep();
-
-  bar("=", 100);
-  e("   !!! CANH BAO: HE THONG DA BI XAM NHAP HOAN TOAN !!!");
-  e("   !!! TOAN BO DU LIEU DANG BI MA HOA - KHONG THE DUNG LAI !!!");
-  bar("=", 100);
-  emp();
-  wait(1);
-
-  // RECON
-  emp();
-  e("[*] Dang thu thap thong tin he thong ...");
-  wait(1);
-  e("     Computer     : %COMPUTERNAME%");
-  e("     User         : %USERNAME%");
-  e("     Domain       : %USERDOMAIN%");
-  e("     OS           : Windows");
-  e("     IP local     : 192.168.1.67");
-  e("     IP public    : 185.220.101.67");
-  e("     MAC          : A4:5E:60:1B:2C:3D");
-  e("     Uptime       : 3 days 14 hours 27 minutes");
-  wait(1);
-
-  // LIST FILE THẬT
-  emp();
-  bar("=", 100);
-  e("   [!] DANG LIET KE TOAN BO DU LIEU CUA BAN ...");
-  bar("=", 100);
-  emp();
-  eRaw('powershell -NoProfile -Command "Get-ChildItem -Path $env:USERPROFILE\\Desktop, $env:USERPROFILE\\Documents, $env:USERPROFILE\\Downloads, $env:USERPROFILE\\Pictures -ErrorAction SilentlyContinue | Select-Object -First 20 | ForEach-Object { \'   >> \' + $_.FullName }"');
-  emp();
-  wait(1);
-
-  // FILE GIẢ
-  var folders = ["Desktop","Documents","Downloads","Pictures","Videos","Music","AppData","Favorites"];
-  var exts    = [".docx",".xlsx",".pdf",".jpg",".png",".mp4",".txt",".zip",".pptx",".psd"];
-  var names   = ["baocao","hopdong","anh","video","gaming","luong","cv","chungtu","screenshot","baitap",
-                 "family","trip","selfie","duan","secret","passwords","bank","cmnd","hoso","danhba",
-                 "meeting","kehoach","thunhap","hocphi","quangcao","note","todo","work","private","backup"];
-  for (var i = 0; i < 300; i++) {
-    var f = folders[i % folders.length];
-    var n = names[i % names.length];
-    var x = exts[i % exts.length];
-    var num = ("000" + (i + 1)).slice(-4);
-    e("   >> C:\\Users\\%USERNAME%\\" + f + "\\" + n + "_" + num + x);
-    if (i % 30 === 0) beep();
+function spawnConfetti(count) {
+  var overlay = document.getElementById("overlay");
+  for (var i = 0; i < count; i++) {
+    var c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "%";
+    c.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    c.style.animationDuration = (2.5 + Math.random() * 3) + "s";
+    c.style.animationDelay = (Math.random() * 3) + "s";
+    c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+    overlay.appendChild(c);
   }
-  emp();
-  e("   ... va con 12,547 file khac.");
-  wait(1);
-
-  // SCAN LAN
-  emp();
-  bar("=", 100);
-  e("   [!] DANG QUET TOAN BO MANG LAN 192.168.1.0/24 ...");
-  bar("=", 100);
-  emp();
-  for (var i = 1; i <= 200; i++) {
-    var ip = "192.168.1." + i;
-    var st = "[VULNERABLE]";
-    if (i % 11 === 0) st = "[OFFLINE]";
-    else if (i % 7  === 0) st = "[FIREWALLED]";
-    else if (i % 13 === 0) st = "[INFECTED]";
-    e("  Scan " + ip + " ... " + st);
-  }
-  emp();
-  e("   [OK] 187 thiet bi online, 132 lo hong.");
-  wait(1);
-
-  // MẬT KHẨU
-  emp();
-  bar("=", 100);
-  e("   [!] DANG LAY MAT KHAU TU CAC TRINH DUYET ...");
-  bar("=", 100);
-  emp();
-  var sites = ["google.com","facebook.com","gmail.com","zalo.me","youtube.com",
-               "instagram.com","tiktok.com","twitter.com","github.com","shopee.vn",
-               "lazada.vn","tiki.vn","vietcombank.com","techcombank.com","mbbank.com"];
-  for (var i = 0; i < 200; i++) {
-    var s = sites[i % sites.length];
-    var u = "user_" + (1000 + i) + "@gmail.com";
-    var fakePass = "***" + Math.random().toString(36).slice(2, 10) + "***";
-    e("  [" + (i + 1) + "] " + s + " | " + u + " | pass: " + fakePass);
-  }
-  emp();
-  e("   [OK] Da lay 1,247 mat khau.");
-  wait(1);
-
-  // ENCRYPT
-  emp();
-  bar("=", 100);
-  e("   [!] DANG MA HOA TOAN BO DU LIEU (AES-256 + RSA-4096) ...");
-  bar("=", 100);
-  emp();
-  for (var i = 0; i <= 100; i += 2) {
-    var filled = Math.floor(i / 5);
-    var barStr = "#".repeat(filled) + "-".repeat(20 - filled);
-    e("  [" + barStr + "] " + i + "%% - " + (i * 128) + " file");
-    if (i % 10 === 0) beep();
-  }
-  emp();
-  e("   [OK] Da ma hoa 12,547 file.");
-  wait(1);
-
-  // UPLOAD
-  emp();
-  bar("=", 100);
-  e("   [!] DANG GUI TOAN BO DU LIEU DEN SERVER TU XA ...");
-  bar("=", 100);
-  emp();
-  for (var i = 0; i <= 100; i += 2) {
-    var filled = Math.floor(i / 5);
-    var barStr = "=".repeat(filled) + ".".repeat(20 - filled);
-    e("  Uploading 4.2 GB to darknet-node-67.onion ... [" + barStr + "] " + i + "%%");
-  }
-  emp();
-  e("   [OK] Da gui toan bo du lieu.");
-  wait(1);
-
-  // WEBCAM
-  emp();
-  bar("=", 100);
-  e("   [!] DANG BAT WEBCAM VA MICROPHONE ...");
-  bar("=", 100);
-  emp();
-  e("   [+] Webcam driver  : HD 1080p");
-  e("   [+] Microphone     : Built-in");
-  e("   [+] Da ghi 47 giay video.");
-  e("   [+] Uploaded HD video.");
-  emp();
-  e("   [!] Video se duoc cong bo neu khong tra tien.");
-  wait(1);
-
-  // MINER
-  emp();
-  bar("=", 100);
-  e("   [!] DANG CAI DAT CRYPTO MINER ...");
-  bar("=", 100);
-  emp();
-  for (var i = 0; i < 60; i++) {
-    var hr = (Math.random() * 100).toFixed(2);
-    e("  Miner: hash rate " + hr + " MH/s, shares: " + i + ", pool: monero-pool.onion");
-  }
-  emp();
-  e("   [OK] Miner dang chay ngam. CPU 100%%. GPU 100%%.");
-  wait(1);
-
-  // NHÁY MÀU
-  emp();
-  bar("=", 100);
-  e("   [!] KICH HOAT CHE DO TUYET DOI ...");
-  bar("=", 100);
-  emp();
-  color("0e"); wait(1); beep();
-  color("0a"); wait(1); beep();
-  color("0d"); wait(1); beep();
-  color("0c"); wait(1); beep();
-  e("   [OK] Da kich hoat.");
-  wait(1);
-
-  // ĐÒI TIỀN
-  emp();
-  bar("=", 100);
-  emp();
-  e("    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-  e("    $                                                                    $");
-  e("    $                    GUI 0.5 BITCOIN DE LAY LAI                      $");
-  e("    $                                                                    $");
-  e("    $                 VI: 1A2b3C4d5E6f7G8h9I0j                          $");
-  e("    $                                                                    $");
-  e("    $                 LIEN HE: hacker@darkweb.onion                     $");
-  e("    $                                                                    $");
-  e("    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-  emp();
-  wait(2);
-  e("   NEU KHONG TRA TIEN TRONG 60 GIAY:");
-  e("      - Toan bo file se bi XOA VINH VIEN");
-  e("      - Video webcam se duoc gui cho danh ba cua ban");
-  e("      - Thong tin ca nhan se duoc ban len dark web");
-  e("      - Tai khoan ngan hang se bi khoa");
-  e("      - Du lieu se duoc cong bo cong khai");
-  emp();
-  wait(2);
-
-  // COUNTDOWN + BEEP
-  e("   [!] BAT DAU DEM NGUOC ...");
-  emp();
-  for (var i = 60; i >= 0; i--) {
-    e("   >>> He thong se bi xoa trong " + i + " GIAY <<<");
-    if (i <= 10) { beep(); beep(); ping(); }
-    else { ping(); }
-  }
-  emp();
-
-  // MỞ NOTEPAD DỌA
-  e("   [!] Dang mo file READ_ME_OR_ELSE.txt ...");
-  eRaw('(echo !!! CANH BAO !!! & echo. & echo May tinh cua ban da bi xam nhap. & echo 67 virus da duoc cai dat. & echo Tat ca file da bi ma hoa AES-256. & echo. & echo Gui 0.5 BTC den: 1A2b3C4d5E6f7G8h9I0j & echo. & echo --------- & echo ... Dua thoi :D & echo Day chi la TRO DUA. Khong co gi xay ra. & echo Ban co the tat cua so nay va tiep tuc binh thuong.) > "%TEMP%\\READ_ME_OR_ELSE.txt"');
-  eRaw('start "" notepad "%TEMP%\\READ_ME_OR_ELSE.txt"');
-  wait(3);
-
-  // LỘ RA
-  emp();
-  bar("=", 100);
-  e("   ... Dua thoi :D");
-  bar("=", 100);
-  emp();
-  e("   Day chi la TRO DUA. Khong co gi xay ra dau.");
-  e("   Khong co virus, khong mat file, khong ai lay duoc gi.");
-  e("   Tat ca chi la chu in ra man hinh.");
-  emp();
-  e("   Bam phim bat ky de thoat.");
-  L.push("pause >nul");
-  L.push("exit");
-
-  return L.join("\r\n");
 }
 
 /* ===========================================================================
-   SECTION 10B - FILE .JAR GIẢ (MINECRAFT MOD)
+   LYRIC ENGINE
    =========================================================================== */
-function buildFakeJarContent() {
-  return [
-    "##########################################################",
-    "#  X-Ray Mod v6.7 for Minecraft 1.20.1                    #",
-    "#  Author: Notch_Official                                 #",
-    "#  WARNING: Do not open with Notepad!                     #",
-    "##########################################################",
-    "",
-    ">> Verifying Minecraft installation ...",
-    ">> Detected: C:\\Users\\%USERNAME%\\AppData\\Roaming\\.minecraft",
-    ">> Injecting mod into launcher ...",
-    ">> Mod successfully installed.",
-    "",
-    "----------------------------------------------------------",
-    "  !!! MINECRAFT ACCOUNT HIJACKED !!!",
-    "----------------------------------------------------------",
-    "",
-    "  Email    : your_email@example.com",
-    "  Password : ************",
-    "  Skin     : default_steve",
-    "  Server   : Hypixel (VIP+)",
-    "  Coins    : 1,247,000",
-    "",
-    "----------------------------------------------------------",
-    "  GUI 0.05 BTC DEN: 1A2b3C4d5E6f7G8h9I0j",
-    "  HOAC TAI KHOAN SE BI XOA VINH VIEN.",
-    "----------------------------------------------------------",
-    "",
-    "  ... Dua thoi :D",
-    "  Day chi la TRO DUA. Khong co gi xay ra dau.",
-    "  File nay khong chay duoc, chi la text doi duoi .jar.",
-    "",
-    "  Bam TAT de thoat."
-  ].join("\r\n");
+var lyricTimers = [];
+
+function runLyrics() {
+  var el = document.getElementById("lyric");
+  lyrics.forEach(function (line) {
+    var t = setTimeout(function () {
+      el.style.opacity = 0;
+      setTimeout(function () {
+        el.textContent = line.text;
+        el.style.opacity = 1;
+      }, 150);
+    }, line.t * 1000);
+    lyricTimers.push(t);
+  });
+}
+
+function clearLyrics() {
+  lyricTimers.forEach(function (t) { clearTimeout(t); });
+  lyricTimers = [];
 }
 
 /* ===========================================================================
-   SECTION 11 - DOWNLOAD
+   AUDIO FALLBACK (nếu YouTube bị chặn)
    =========================================================================== */
-function downloadBlob(name, content, mime) {
-  var blob = new Blob([content], { type: mime || "application/octet-stream" });
-  var url  = URL.createObjectURL(blob);
-  var a    = document.createElement("a");
-  a.href   = url;
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+function tryPlayFallbackAudio() {
+  // Nếu sau 3 giây iframe chưa load được (bị chặn), phát tiếng beep vui
+  setTimeout(function () {
+    var iframe = document.getElementById("ytPlayer");
+    if (!iframe || !iframe.contentWindow) {
+      playBeepMelody();
+    }
+  }, 3000);
 }
 
-function downloadBat() {
-  downloadBlob("windows_critical_update.bat", buildBatContent(), "application/octet-stream");
-}
-
-function downloadJar() {
-  downloadBlob("X-Ray_Mod_1.20.1.jar", buildFakeJarContent(), "application/java-archive");
-}
-
-function downloadAnswer() {
-  fetch("answer.txt")
-    .then(function (res) {
-      if (!res.ok) throw new Error("Khong tai duoc answer.txt");
-      return res.text();
-    })
-    .then(function (text) {
-      downloadBlob("dapan_de_thi_tieng_anh.txt", text, "text/plain;charset=utf-8");
-    })
-    .catch(function (err) {
-      var fallback =
-        "SỞ GIÁO DỤC VÀ ĐÀO TẠO BẮC NINH\n" +
-        "ĐỀ THI THỬ LẦN 2 - MÔN TIẾNG ANH\n" +
-        "ĐÁP ÁN CHI TIẾT\n\n" +
-        "(Khong tai duoc answer.txt: " + err.message + ")\n";
-      downloadBlob("dapan_de_thi_tieng_anh.txt", fallback, "text/plain;charset=utf-8");
+function playBeepMelody() {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var notes = [523, 587, 659, 698, 784, 880, 988, 1047]; // C D E F G A B C
+    notes.forEach(function (freq, i) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.value = freq;
+      gain.gain.value = 0.08;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + i * 0.2);
+      osc.stop(ctx.currentTime + i * 0.2 + 0.18);
     });
+  } catch (e) {}
 }
 
 /* ===========================================================================
-   SECTION 12 - OVERLAY ACTIVATE / DEACTIVATE
+   ACTIVATE / DEACTIVATE
    =========================================================================== */
-function activateOverlay() {
+var confettiInterval = null;
+
+function activate() {
   var overlay = document.getElementById("overlay");
   overlay.classList.add("active");
-  overlay.setAttribute("aria-hidden", "false");
+
+  // Fullscreen
   try {
     if (overlay.requestFullscreen) overlay.requestFullscreen();
     else if (overlay.webkitRequestFullscreen) overlay.webkitRequestFullscreen();
   } catch (e) {}
-  initMatrix();
-  startAlarm();
-  runTerminal();
-  runProgress();
-  updateInfo();
-  startCamTimer();
-  startStats();
-  startPopups();
-  infoInterval = setInterval(updateInfo, 800);
+
+  // Load YouTube
+  document.getElementById("ytPlayer").src = YOUTUBE_URL;
+
+  // Effects
+  spawnDancers();
+  spawnConfetti(80);
+  confettiInterval = setInterval(function () { spawnConfetti(15); }, 2500);
+
+  // Lyrics
+  runLyrics();
+
+  // Fallback audio nếu YT bị chặn
+  tryPlayFallbackAudio();
 }
 
-function deactivateOverlay() {
+function deactivate() {
   var overlay = document.getElementById("overlay");
   overlay.classList.remove("active");
-  overlay.setAttribute("aria-hidden", "true");
-  stopAlarm();
-  stopCamTimer();
-  stopStats();
-  stopPopups();
-  if (infoInterval) clearInterval(infoInterval);
-  infoInterval = null;
+
+  // Dừng YouTube
+  document.getElementById("ytPlayer").src = "";
+
+  // Dừng effects
+  if (confettiInterval) clearInterval(confettiInterval);
+  confettiInterval = null;
+  clearLyrics();
+
+  // Xóa dancers + confetti
+  var els = overlay.querySelectorAll(".dancer, .confetti");
+  els.forEach(function (el) { el.remove(); });
+
+  // Reset lyric
+  document.getElementById("lyric").textContent = "♪ ... ♪";
+
+  // Thoát fullscreen
   if (document.fullscreenElement) {
     document.exitFullscreen().catch(function () {});
   }
 }
 
 /* ===========================================================================
-   SECTION 13 - SỰ KIỆN
+   EVENTS
    =========================================================================== */
-document.getElementById("startBtn").addEventListener("click", function () {
-  activateOverlay();
-  downloadBat();
-  setTimeout(downloadJar, 700);
-  setTimeout(downloadAnswer, 1400);
-  var fb = document.getElementById("fallback");
-  if (fb) fb.style.display = "block";
-});
-
-document.getElementById("closeBtn").addEventListener("click", function () {
-  deactivateOverlay();
-});
+document.getElementById("startBtn").addEventListener("click", activate);
+document.getElementById("closeBtn").addEventListener("click", deactivate);
 
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     var overlay = document.getElementById("overlay");
-    if (overlay.classList.contains("active")) {
-      deactivateOverlay();
-    }
-  }
-});
-
-/* ===========================================================================
-   SECTION 14 - KHỞI TẠO LINK DỰ PHÒNG
-   =========================================================================== */
-window.addEventListener("load", function () {
-  var link = document.getElementById("dlLink");
-  if (link && !link.href) {
-    var blob = new Blob([buildBatContent()], { type: "application/octet-stream" });
-    link.href = URL.createObjectURL(blob);
-  }
-
-  var linkJar = document.getElementById("dlLinkJar");
-  if (linkJar) {
-    var blob2 = new Blob([buildFakeJarContent()], { type: "application/java-archive" });
-    linkJar.href = URL.createObjectURL(blob2);
-  }
-
-  fetch("answer.txt")
-    .then(function (r) { return r.blob(); })
-    .then(function (b) {
-      var l2 = document.getElementById("dlLinkAnswer");
-      if (l2) l2.href = URL.createObjectURL(b);
-    })
-    .catch(function () {});
-});
-
-/* ===========================================================================
-   SECTION 15 - CHỐNG CLICK PHẢI KHI OVERLAY BẬT
-   =========================================================================== */
-document.addEventListener("contextmenu", function (e) {
-  var overlay = document.getElementById("overlay");
-  if (overlay.classList.contains("active")) {
-    e.preventDefault();
+    if (overlay.classList.contains("active")) deactivate();
   }
 });
 </script>
 
 </body>
 </html>
-Sau khi dán index.html xong, tạo thêm file answer.txt
-Trong cùng thư mục repo, tạo file answer.txt và dán toàn bộ nội dung PDF bạn gửi vào đó. Không cần format gì đặc biệt, chỉ cần text thuần.
-
-Nếu không muốn dán hết, tối thiểu cũng nên có vài dòng:
-
-text
-SỞ GIÁO DỤC VÀ ĐÀO TẠO BẮC NINH
-ĐỀ THI THỬ LẦN 2 - MÔN TIẾNG ANH
-ĐÁP ÁN CHI TIẾT
-
-[Toàn bộ nội dung PDF bạn gửi vào đây...]
