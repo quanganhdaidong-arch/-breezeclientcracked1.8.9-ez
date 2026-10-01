@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Surprise!</title>
+<title>See You Again</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   min-height: 100vh;
-  background: #111;
+  background: #0a0a1a;
   color: #fff;
-  font-family: system-ui, sans-serif;
+  font-family: Georgia, "Times New Roman", serif;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -19,28 +19,26 @@ body {
 
 /* ============ START BUTTON ============ */
 #startBtn {
-  padding: 20px 40px;
-  font-size: 22px;
+  padding: 18px 44px;
+  font-size: 20px;
   cursor: pointer;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(45deg, #ff0066, #ff9900, #00ff99, #0099ff, #ff0066);
-  background-size: 400% 400%;
-  color: #fff;
-  font-weight: bold;
+  border: 2px solid #c9a86a;
+  border-radius: 50px;
+  background: transparent;
+  color: #e8d5a8;
+  font-family: Georgia, serif;
+  font-style: italic;
   letter-spacing: 2px;
-  text-transform: uppercase;
-  animation: gradientMove 3s ease infinite;
-  box-shadow: 0 0 30px rgba(255, 0, 102, 0.7);
-  transition: transform 0.2s;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 30px rgba(201, 168, 106, 0.4);
 }
-#startBtn:hover { transform: scale(1.05); }
-#startBtn:active { transform: scale(0.97); }
-
-@keyframes gradientMove {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+#startBtn:hover {
+  background: #c9a86a;
+  color: #0a0a1a;
+  box-shadow: 0 0 60px rgba(201, 168, 106, 0.8);
+  transform: scale(1.05);
 }
+#startBtn:active { transform: scale(0.98); }
 
 /* ============ OVERLAY ============ */
 #overlay {
@@ -52,28 +50,99 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: bgCycle 4s infinite;
+  background:
+    radial-gradient(ellipse at 50% 20%, #1a1a3a 0%, #0a0a1a 60%, #050510 100%);
 }
 #overlay.active { display: flex; }
 
-@keyframes bgCycle {
-  0%   { background: #ff0066; }
-  25%  { background: #ff9900; }
-  50%  { background: #00ff99; }
-  75%  { background: #0099ff; }
-  100% { background: #ff0066; }
+/* ============ STARS ============ */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.5); }
+}
+
+/* ============ FLOATING LANTERNS ============ */
+.lantern {
+  position: absolute;
+  font-size: 28px;
+  z-index: 1;
+  animation: floatUp linear infinite;
+  pointer-events: none;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 12px #ffaa44);
+}
+@keyframes floatUp {
+  from { transform: translateY(100vh) translateX(0) scale(0.9); opacity: 0; }
+  10%  { opacity: 0.9; }
+  90%  { opacity: 0.9; }
+  to   { transform: translateY(-20vh) translateX(30px) scale(1.1); opacity: 0; }
+}
+
+/* ============ FALLING PETALS ============ */
+.petal {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #ffccdd, #cc6688);
+  border-radius: 50% 0 50% 50%;
+  z-index: 1;
+  animation: fallDown linear infinite;
+  pointer-events: none;
+  opacity: 0.7;
+}
+@keyframes fallDown {
+  from { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  to   { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ============ TOP TITLE ============ */
+#topText {
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: clamp(20px, 3.6vw, 40px);
+  font-weight: normal;
+  color: #e8d5a8;
+  font-family: Georgia, serif;
+  font-style: italic;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(201, 168, 106, 0.8),
+               0 0 40px rgba(201, 168, 106, 0.4);
+  text-align: center;
+  animation: glowSoft 3s infinite alternate;
+}
+@keyframes glowSoft {
+  from { text-shadow: 0 0 20px rgba(201, 168, 106, 0.6),
+                      0 0 40px rgba(201, 168, 106, 0.3); }
+  to   { text-shadow: 0 0 30px rgba(201, 168, 106, 1),
+                      0 0 60px rgba(201, 168, 106, 0.6); }
 }
 
 /* ============ YOUTUBE PLAYER ============ */
 #player-wrap {
   position: relative;
   z-index: 3;
-  width: min(720px, 90vw);
+  width: min(760px, 88vw);
   aspect-ratio: 16/9;
-  border: 4px solid #fff;
-  border-radius: 12px;
+  border: 2px solid rgba(201, 168, 106, 0.6);
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 0 50px rgba(0,0,0,0.6);
+  box-shadow: 0 0 60px rgba(201, 168, 106, 0.4),
+              0 0 120px rgba(80, 60, 150, 0.5);
   background: #000;
 }
 #player-wrap iframe {
@@ -83,18 +152,40 @@ body {
   display: block;
 }
 
-/* ============ DANCING EMOJIS ============ */
-.dancer {
+/* ============ POLAROID MEMORY ============ */
+.polaroid {
   position: absolute;
-  font-size: 70px;
+  width: 130px;
+  height: 160px;
+  background: #fdfdf5;
+  padding: 8px 8px 30px 8px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
   z-index: 2;
-  animation: dance 0.6s infinite alternate;
   pointer-events: none;
-  filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+  animation: sway 6s ease-in-out infinite;
 }
-@keyframes dance {
-  from { transform: translateY(0) rotate(-15deg) scale(1); }
-  to   { transform: translateY(-30px) rotate(15deg) scale(1.15); }
+.polaroid .photo {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #4a4a8a, #8a5a8a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+.polaroid .caption {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Brush Script MT", cursive;
+  font-size: 13px;
+  color: #555;
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50%      { transform: rotate(4deg) translateY(-10px); }
 }
 
 /* ============ LYRIC BOX ============ */
@@ -103,53 +194,21 @@ body {
   bottom: 8%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 4;
-  font-size: clamp(20px, 4vw, 38px);
-  font-weight: bold;
+  z-index: 6;
+  font-size: clamp(16px, 2.6vw, 28px);
   color: #fff;
-  text-shadow: 0 0 10px #000, 0 0 20px #000, 3px 3px 0 #000;
+  font-family: Georgia, serif;
+  font-style: italic;
   text-align: center;
-  padding: 10px 24px;
-  background: rgba(0, 0, 0, 0.35);
+  padding: 12px 28px;
+  background: rgba(10, 10, 26, 0.55);
+  border: 1px solid rgba(201, 168, 106, 0.4);
   border-radius: 12px;
   max-width: 90%;
-  transition: opacity 0.3s;
   letter-spacing: 1px;
-}
-
-/* ============ TOP TEXT ============ */
-#topText {
-  position: absolute;
-  top: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  font-size: clamp(24px, 5vw, 52px);
-  font-weight: 900;
-  color: #fff;
-  text-shadow: 0 0 20px #ff0066, 0 0 40px #000, 4px 4px 0 #000;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  animation: pulseText 0.5s infinite alternate;
-  text-align: center;
-}
-@keyframes pulseText {
-  from { transform: translateX(-50%) scale(1); }
-  to   { transform: translateX(-50%) scale(1.08); }
-}
-
-/* ============ CONFETTI ============ */
-.confetti {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  z-index: 1;
-  animation: fall linear infinite;
-  pointer-events: none;
-}
-@keyframes fall {
-  from { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-  to   { transform: translateY(100vh) rotate(720deg); opacity: 0.7; }
+  text-shadow: 0 0 10px rgba(201, 168, 106, 0.6);
+  transition: opacity 0.4s ease;
+  backdrop-filter: blur(4px);
 }
 
 /* ============ CLOSE BUTTON ============ */
@@ -158,25 +217,43 @@ body {
   top: 20px;
   right: 20px;
   z-index: 10;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 8px 18px;
+  font-size: 14px;
   cursor: pointer;
-  border: 2px solid #fff;
-  background: rgba(0,0,0,0.5);
-  color: #fff;
-  font-weight: bold;
-  border-radius: 8px;
+  border: 1px solid rgba(201, 168, 106, 0.6);
+  background: rgba(10, 10, 26, 0.5);
+  color: #e8d5a8;
+  font-family: Georgia, serif;
+  border-radius: 20px;
   letter-spacing: 1px;
 }
-#closeBtn:hover { background: #fff; color: #000; }
+#closeBtn:hover {
+  background: #c9a86a;
+  color: #0a0a1a;
+}
+
+/* ============ QUOTE CORNER ============ */
+#quote {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 12px;
+  color: rgba(232, 213, 168, 0.7);
+  font-style: italic;
+  letter-spacing: 2px;
+  text-align: center;
+  font-family: Georgia, serif;
+}
 </style>
 </head>
 <body>
 
-  <button id="startBtn">Bấm vào đây 🎁</button>
+  <button id="startBtn">🎵 Bấm vào đây</button>
 
   <div id="overlay">
-    <div id="topText">🎵 NEVER GONNA GIVE YOU UP 🎵</div>
+    <div id="topText">See You Again</div>
 
     <div id="player-wrap">
       <iframe
@@ -184,11 +261,13 @@ body {
         src=""
         allow="autoplay; encrypted-media"
         allowfullscreen
-        title="Rickroll">
+        title="See You Again">
       </iframe>
     </div>
 
     <div id="lyric">♪ ... ♪</div>
+
+    <div id="quote">— In loving memory of the ones we miss —</div>
 
     <button id="closeBtn">[ TẮT ]</button>
   </div>
@@ -197,7 +276,7 @@ body {
 /* ===========================================================================
    CONFIG
    =========================================================================== */
-var YOUTUBE_ID = "dQw4w9WgXcQ";   // Rick Astley - Never Gonna Give You Up
+var YOUTUBE_ID  = "RgKAFK5djSk";  // Wiz Khalifa ft. Charlie Puth - See You Again
 var YOUTUBE_URL = "https://www.youtube.com/embed/" + YOUTUBE_ID +
                   "?autoplay=1&start=0&rel=0&modestbranding=1";
 
@@ -205,77 +284,138 @@ var YOUTUBE_URL = "https://www.youtube.com/embed/" + YOUTUBE_ID +
    LYRICS + TIMING (giây)
    =========================================================================== */
 var lyrics = [
-  { t: 0,   text: "♪ ... ♪" },
-  { t: 1,   text: "We're no strangers to love" },
-  { t: 4,   text: "You know the rules and so do I" },
-  { t: 7.5, text: "A full commitment's what I'm thinking of" },
-  { t: 11,  text: "You wouldn't get this from any other guy" },
-  { t: 15,  text: "I just wanna tell you how I'm feeling" },
-  { t: 18.5,text: "Gotta make you understand" },
-  { t: 21.5,text: "🎵 Never gonna give you up 🎵" },
-  { t: 24.5,text: "Never gonna let you down" },
-  { t: 27,  text: "Never gonna run around and desert you" },
-  { t: 30,  text: "Never gonna make you cry" },
-  { t: 33,  text: "Never gonna say goodbye" },
-  { t: 35.5,text: "Never gonna tell a lie and hurt you" },
-  { t: 42,  text: "We've known each other for so long" },
-  { t: 45.5,text: "Your heart's been aching but you're too shy to say it" },
-  { t: 49,  text: "Inside we both know what's been going on" },
-  { t: 52.5,text: "We know the game and we're gonna play it" },
-  { t: 56,  text: "And if you ask me how I'm feeling" },
-  { t: 59.5,text: "Don't tell me you're too blind to see" },
-  { t: 63,  text: "🎵 Never gonna give you up 🎵" },
-  { t: 66,  text: "Never gonna let you down" },
-  { t: 68.5,text: "Never gonna run around and desert you" },
-  { t: 71.5,text: "Never gonna make you cry" },
-  { t: 74,  text: "Never gonna say goodbye" },
-  { t: 76.5,text: "Never gonna tell a lie and hurt you" },
-  { t: 79,  text: "🎵 Never gonna give you up 🎵" },
-  { t: 82,  text: "Never gonna let you down" },
-  { t: 84.5,text: "Never gonna run around and desert you" },
-  { t: 87.5,text: "Never gonna make you cry" },
-  { t: 90,  text: "Never gonna say goodbye" },
-  { t: 92.5,text: "Never gonna tell a lie and hurt you" },
-  { t: 96,  text: "🎉 YOU GOT RICKROLLED! 🎉" },
-  { t: 120, text: "🎵 ... ♪ (still playing ...)" }
+  { t: 0,    text: "♪ ... ♪" },
+  { t: 10,   text: "It's been a long day without you, my friend" },
+  { t: 15,   text: "And I'll tell you all about it when I see you again" },
+  { t: 20,   text: "We've come a long way from where we began" },
+  { t: 25,   text: "Oh, I'll tell you all about it when I see you again" },
+  { t: 30,   text: "When I see you again" },
+  { t: 35,   text: "Damn, who knew?" },
+  { t: 38,   text: "All the planes we flew, good things we been through" },
+  { t: 41,   text: "That I'd be standing right here talking to you" },
+  { t: 44,   text: "'Bout another path, I know we loved to hit the road and laugh" },
+  { t: 48,   text: "But something told me that it wouldn't last" },
+  { t: 51,   text: "Had to switch up, look at things different" },
+  { t: 54,   text: "See the bigger picture" },
+  { t: 56,   text: "Those were the days, hard work forever pays" },
+  { t: 59,   text: "Now I see you in a better place" },
+  { t: 63,   text: "How could we not talk about family when family's all that we got?" },
+  { t: 68,   text: "Everything I went through, you were standing there by my side" },
+  { t: 73,   text: "And now you gon' be with me for the last ride" },
+  { t: 78,   text: "It's been a long day without you, my friend" },
+  { t: 83,   text: "And I'll tell you all about it when I see you again" },
+  { t: 88,   text: "We've come a long way from where we began" },
+  { t: 93,   text: "Oh, I'll tell you all about it when I see you again" },
+  { t: 98,   text: "When I see you again" },
+  { t: 110,  text: "First, you both go out your way and the vibe is feeling strong" },
+  { t: 115,  text: "And what's small turned to a friendship" },
+  { t: 118,  text: "A friendship turned to a bond" },
+  { t: 121,  text: "And that bond will never be broken" },
+  { t: 124,  text: "The love will never get lost" },
+  { t: 128,  text: "And when brotherhood come first" },
+  { t: 131,  text: "Then the line will never be crossed" },
+  { t: 134,  text: "Established it on our own when that line had to be drawn" },
+  { t: 139,  text: "And that line is what we reached" },
+  { t: 142,  text: "So remember me when I'm gone" },
+  { t: 146,  text: "How could we not talk about family when family's all that we got?" },
+  { t: 151,  text: "Everything I went through, you were standing there by my side" },
+  { t: 156,  text: "And now you gon' be with me for the last ride" },
+  { t: 161,  text: "So let the light guide your way, yeah" },
+  { t: 166,  text: "Hold every memory as you go" },
+  { t: 170,  text: "And every road you take will always lead you home" },
+  { t: 175,  text: "It's been a long day without you, my friend" },
+  { t: 180,  text: "And I'll tell you all about it when I see you again" },
+  { t: 185,  text: "We've come a long way from where we began" },
+  { t: 190,  text: "Oh, I'll tell you all about it when I see you again" },
+  { t: 195,  text: "When I see you again" },
+  { t: 210,  text: "🎵 ... 🎵" },
+  { t: 225,  text: "See you again ..." }
 ];
 
 /* ===========================================================================
-   DANCING EMOJIS
+   STARS
    =========================================================================== */
-var dancerEmojis = ["🕺", "💃", "🕺", "💃", "🕺", "💃", "🎩", "🎤"];
-
-function spawnDancers() {
+function spawnStars(count) {
   var overlay = document.getElementById("overlay");
-  for (var i = 0; i < dancerEmojis.length; i++) {
-    var d = document.createElement("div");
-    d.className = "dancer";
-    d.textContent = dancerEmojis[i];
-    d.style.left = (5 + i * 12 + Math.random() * 4) + "%";
-    d.style.top  = (10 + Math.random() * 60) + "%";
-    d.style.animationDelay = (Math.random() * 0.6) + "s";
-    d.style.animationDuration = (0.4 + Math.random() * 0.4) + "s";
-    overlay.appendChild(d);
+  for (var i = 0; i < count; i++) {
+    var s = document.createElement("div");
+    s.className = "star";
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top  = Math.random() * 100 + "%";
+    s.style.width  = (1 + Math.random() * 2) + "px";
+    s.style.height = s.style.width;
+    s.style.animationDelay = (Math.random() * 3) + "s";
+    s.style.animationDuration = (2 + Math.random() * 3) + "s";
+    overlay.appendChild(s);
   }
 }
 
 /* ===========================================================================
-   CONFETTI
+   FLOATING LANTERNS
    =========================================================================== */
-var confettiColors = ["#ff0066","#ff9900","#ffff00","#00ff99","#0099ff","#cc00ff","#ffffff"];
+var lanternEmojis = ["🏮", "🕯️", "🕊️", "✨", "💫"];
 
-function spawnConfetti(count) {
+function spawnLanterns(count) {
   var overlay = document.getElementById("overlay");
   for (var i = 0; i < count; i++) {
-    var c = document.createElement("div");
-    c.className = "confetti";
-    c.style.left = Math.random() * 100 + "%";
-    c.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-    c.style.animationDuration = (2.5 + Math.random() * 3) + "s";
-    c.style.animationDelay = (Math.random() * 3) + "s";
-    c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
-    overlay.appendChild(c);
+    var l = document.createElement("div");
+    l.className = "lantern";
+    l.textContent = lanternEmojis[Math.floor(Math.random() * lanternEmojis.length)];
+    l.style.left = Math.random() * 100 + "%";
+    l.style.animationDuration = (12 + Math.random() * 10) + "s";
+    l.style.animationDelay = (Math.random() * 12) + "s";
+    l.style.fontSize = (20 + Math.random() * 20) + "px";
+    overlay.appendChild(l);
   }
+}
+
+/* ===========================================================================
+   FALLING PETALS
+   =========================================================================== */
+function spawnPetals(count) {
+  var overlay = document.getElementById("overlay");
+  for (var i = 0; i < count; i++) {
+    var p = document.createElement("div");
+    p.className = "petal";
+    p.style.left = Math.random() * 100 + "%";
+    p.style.animationDuration = (8 + Math.random() * 8) + "s";
+    p.style.animationDelay = (Math.random() * 8) + "s";
+    p.style.width = p.style.height = (8 + Math.random() * 10) + "px";
+    overlay.appendChild(p);
+  }
+}
+
+/* ===========================================================================
+   POLAROID MEMORIES
+   =========================================================================== */
+var memories = [
+  { emoji: "🌅", caption: "Those days" },
+  { emoji: "🎸", caption: "Our song" },
+  { emoji: "🏍️", caption: "Last ride" },
+  { emoji: "🌊", caption: "Summer '19" },
+  { emoji: "⭐", caption: "Forever" }
+];
+
+function spawnPolaroids() {
+  var overlay = document.getElementById("overlay");
+  var positions = [
+    { left: "3%",  top: "18%" },
+    { left: "88%", top: "22%" },
+    { left: "5%",  top: "62%" },
+    { left: "88%", top: "65%" },
+    { left: "45%", top: "2%"  }
+  ];
+  memories.forEach(function (m, i) {
+    var p = document.createElement("div");
+    p.className = "polaroid";
+    p.style.left = positions[i].left;
+    p.style.top  = positions[i].top;
+    p.style.animationDelay = (i * 0.8) + "s";
+    p.innerHTML =
+      '<div class="photo">' + m.emoji + '</div>' +
+      '<div class="caption">' + m.caption + '</div>';
+    overlay.appendChild(p);
+  });
 }
 
 /* ===========================================================================
@@ -291,7 +431,7 @@ function runLyrics() {
       setTimeout(function () {
         el.textContent = line.text;
         el.style.opacity = 1;
-      }, 150);
+      }, 200);
     }, line.t * 1000);
     lyricTimers.push(t);
   });
@@ -306,29 +446,42 @@ function clearLyrics() {
    AUDIO FALLBACK (nếu YouTube bị chặn)
    =========================================================================== */
 function tryPlayFallbackAudio() {
-  // Nếu sau 3 giây iframe chưa load được (bị chặn), phát tiếng beep vui
   setTimeout(function () {
     var iframe = document.getElementById("ytPlayer");
     if (!iframe || !iframe.contentWindow) {
-      playBeepMelody();
+      playGentleMelody();
     }
   }, 3000);
 }
 
-function playBeepMelody() {
+function playGentleMelody() {
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var notes = [523, 587, 659, 698, 784, 880, 988, 1047]; // C D E F G A B C
-    notes.forEach(function (freq, i) {
+    // Giai điệu nhẹ nhàng - hợp âm buồn
+    var notes = [
+      { f: 392, d: 0.5 },  // G
+      { f: 440, d: 0.5 },  // A
+      { f: 494, d: 0.8 },  // B
+      { f: 440, d: 0.4 },  // A
+      { f: 392, d: 0.6 },  // G
+      { f: 349, d: 0.6 },  // F
+      { f: 330, d: 0.8 },  // E
+      { f: 294, d: 1.0 }   // D
+    ];
+    var time = ctx.currentTime;
+    notes.forEach(function (n) {
       var osc = ctx.createOscillator();
       var gain = ctx.createGain();
-      osc.type = "square";
-      osc.frequency.value = freq;
-      gain.gain.value = 0.08;
+      osc.type = "sine";
+      osc.frequency.value = n.f;
+      gain.gain.setValueAtTime(0, time);
+      gain.gain.linearRampToValueAtTime(0.08, time + 0.05);
+      gain.gain.linearRampToValueAtTime(0, time + n.d);
       osc.connect(gain);
       gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + i * 0.2);
-      osc.stop(ctx.currentTime + i * 0.2 + 0.18);
+      osc.start(time);
+      osc.stop(time + n.d);
+      time += n.d;
     });
   } catch (e) {}
 }
@@ -336,8 +489,6 @@ function playBeepMelody() {
 /* ===========================================================================
    ACTIVATE / DEACTIVATE
    =========================================================================== */
-var confettiInterval = null;
-
 function activate() {
   var overlay = document.getElementById("overlay");
   overlay.classList.add("active");
@@ -352,9 +503,10 @@ function activate() {
   document.getElementById("ytPlayer").src = YOUTUBE_URL;
 
   // Effects
-  spawnDancers();
-  spawnConfetti(80);
-  confettiInterval = setInterval(function () { spawnConfetti(15); }, 2500);
+  spawnStars(120);
+  spawnLanterns(12);
+  spawnPetals(30);
+  spawnPolaroids();
 
   // Lyrics
   runLyrics();
@@ -370,13 +522,11 @@ function deactivate() {
   // Dừng YouTube
   document.getElementById("ytPlayer").src = "";
 
-  // Dừng effects
-  if (confettiInterval) clearInterval(confettiInterval);
-  confettiInterval = null;
+  // Dừng lyrics
   clearLyrics();
 
-  // Xóa dancers + confetti
-  var els = overlay.querySelectorAll(".dancer, .confetti");
+  // Xóa effects
+  var els = overlay.querySelectorAll(".star, .lantern, .petal, .polaroid");
   els.forEach(function (el) { el.remove(); });
 
   // Reset lyric
