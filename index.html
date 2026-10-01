@@ -3,563 +3,643 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Rạp phim ký ức</title>
+<title>Google</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  min-height: 100vh;
-  background: #0d0505;
-  color: #fff;
-  font-family: Georgia, "Times New Roman", serif;
-  overflow: hidden;
-}
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #202124;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-/* ================= START SCREEN ================= */
-#startScreen {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: radial-gradient(circle at 50% 40%, #2a0808, #0d0505 70%);
-  z-index: 100;
-  transition: opacity 0.8s;
-}
-#startScreen.hide { opacity: 0; pointer-events: none; }
+  /* ========== TOP BAR ========== */
+  .topbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 14px 20px;
+    gap: 20px;
+    font-size: 13px;
+  }
+  .topbar a {
+    color: #202124;
+    text-decoration: none;
+  }
+  .topbar a:hover { text-decoration: underline; }
+  .apps-icon {
+    width: 24px; height: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 2px;
+    cursor: pointer;
+  }
+  .apps-icon span {
+    background: #5f6368;
+    border-radius: 50%;
+  }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
 
-#startBtn {
-  padding: 22px 56px;
-  font-size: 22px;
-  cursor: pointer;
-  border: 2px solid #c9a86a;
-  border-radius: 6px;
-  background: transparent;
-  color: #c9a86a;
-  font-family: Georgia, serif;
-  font-style: italic;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  transition: all 0.4s;
-  box-shadow: 0 0 40px rgba(201, 168, 106, 0.3);
-}
-#startBtn:hover {
-  background: #c9a86a;
-  color: #0d0505;
-  box-shadow: 0 0 80px rgba(201, 168, 106, 0.8);
-  transform: scale(1.05);
-}
+  /* ========== HOME VIEW ========== */
+  #home {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 100px;
+    margin-top: -60px;
+  }
 
-/* ================= CINEMA ROOM ================= */
-#cinema {
-  position: fixed;
-  inset: 0;
-  display: none;
-  overflow: hidden;
-  background: #000;
-}
-#cinema.active { display: block; }
+  .logo {
+    font-size: 92px;
+    font-weight: 500;
+    letter-spacing: -4px;
+    margin-bottom: 30px;
+    font-family: "Product Sans", Arial, sans-serif;
+    user-select: none;
+  }
+  .logo span:nth-child(1) { color: #4285f4; }
+  .logo span:nth-child(2) { color: #ea4335; }
+  .logo span:nth-child(3) { color: #fbbc05; }
+  .logo span:nth-child(4) { color: #4285f4; }
+  .logo span:nth-child(5) { color: #34a853; }
+  .logo span:nth-child(6) { color: #ea4335; }
 
-/* --- Curtains --- */
-.curtain {
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 50%;
-  z-index: 10;
-  transition: transform 1.8s cubic-bezier(0.7, 0, 0.3, 1);
-  background:
-    repeating-linear-gradient(
-      to right,
-      #2a0505 0px,
-      #5a0c0c 12px,
-      #3a0808 24px,
-      #6a1010 36px,
-      #2a0505 48px
-    );
-  box-shadow: 0 0 80px rgba(0,0,0,0.95) inset;
-}
-.curtain::after {
-  content: "";
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 30px;
-  background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
-}
-.curtain-left {
-  left: 0;
-  transform: translateX(-100%);
-}
-.curtain-left::after { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.7), transparent); }
-.curtain-right {
-  right: 0;
-  transform: translateX(100%);
-}
-.curtain-right::after { left: 0; }
-.curtain-left.open  { transform: translateX(0); }
-.curtain-right.open { transform: translateX(0); }
+  .search-box {
+    width: min(584px, 90vw);
+    height: 46px;
+    border: 1px solid #dfe1e5;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    transition: box-shadow 0.2s;
+    background: #fff;
+  }
+  .search-box:hover,
+  .search-box:focus-within {
+    box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+    border-color: rgba(223,225,229,0);
+  }
+  .search-box svg { flex-shrink: 0; }
+  #q {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    color: #202124;
+  }
+  .icon-btn {
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+  }
+  .icon-btn:hover { background: #f1f3f4; }
 
-/* --- Projector beam --- */
-.projector-beam {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 30%;
-  background: linear-gradient(to bottom,
-    rgba(255, 235, 160, 0.7) 0%,
-    rgba(255, 220, 130, 0.15) 60%,
-    transparent 100%);
-  filter: blur(20px);
-  z-index: 4;
-  pointer-events: none;
-  animation: flicker 0.12s infinite;
-}
-@keyframes flicker {
-  0%, 100% { opacity: 0.75; }
-  40%      { opacity: 0.9; }
-  70%      { opacity: 0.6; }
-}
+  .buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .buttons button {
+    padding: 10px 22px;
+    background: #f8f9fa;
+    border: 1px solid #f8f9fa;
+    border-radius: 4px;
+    color: #3c4043;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .buttons button:hover {
+    border-color: #dadce0;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
 
-/* --- Film grain --- */
-.grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 6;
-  opacity: 0.09;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='3'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  animation: grainShift 0.25s steps(2) infinite;
-}
-@keyframes grainShift {
-  0%   { transform: translate(0, 0); }
-  50%  { transform: translate(-6px, 4px); }
-  100% { transform: translate(5px, -5px); }
-}
+  .lang-row {
+    margin-top: 28px;
+    font-size: 13px;
+    color: #4d5156;
+  }
+  .lang-row a {
+    color: #1a73e8;
+    text-decoration: none;
+    margin-left: 6px;
+  }
+  .lang-row a:hover { text-decoration: underline; }
 
-/* --- Screen frame --- */
-#screenArea {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  z-index: 5;
-}
-#screenFrame {
-  position: relative;
-  width: min(920px, 82vw);
-  aspect-ratio: 16/9;
-  background: #000;
-  border: 1px solid rgba(201, 168, 106, 0.25);
-  box-shadow:
-    0 0 80px rgba(255, 200, 100, 0.15),
-    0 0 160px rgba(255, 200, 100, 0.08),
-    0 20px 60px rgba(0, 0, 0, 0.9);
-}
-#ytPlayer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
+  /* ========== RESULTS VIEW ========== */
+  #results {
+    display: none;
+    flex-direction: column;
+    padding: 20px 0;
+    min-height: 100vh;
+  }
+  #results.on { display: flex; }
+  #home.off { display: none; }
 
-/* --- Countdown --- */
-#countdown {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: #000;
-  z-index: 9;
-  transition: opacity 0.6s;
-}
-#countdown.hide { opacity: 0; pointer-events: none; }
+  .results-header {
+    display: flex;
+    align-items: center;
+    padding: 0 28px 20px;
+    gap: 24px;
+    border-bottom: 1px solid #ebebeb;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 5;
+  }
+  .results-header .mini-logo {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -2px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .results-header .mini-logo span:nth-child(1) { color: #4285f4; }
+  .results-header .mini-logo span:nth-child(2) { color: #ea4335; }
+  .results-header .mini-logo span:nth-child(3) { color: #fbbc05; }
+  .results-header .mini-logo span:nth-child(4) { color: #4285f4; }
+  .results-header .mini-logo span:nth-child(5) { color: #34a853; }
+  .results-header .mini-logo span:nth-child(6) { color: #ea4335; }
 
-.countdownCircle {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  display: grid;
-  place-items: center;
-  border: 3px solid #f0e0c0;
-  border-radius: 50%;
-  font-family: Georgia, serif;
-  font-size: 110px;
-  font-weight: bold;
-  color: #f0e0c0;
-  text-shadow: 0 0 20px rgba(240, 224, 192, 0.6);
-  overflow: hidden;
-}
-.countdownCircle::before {
-  content: "";
-  position: absolute;
-  inset: 22px;
-  border: 1px solid rgba(240, 224, 192, 0.35);
-  border-radius: 50%;
-}
-.countdownCircle::after {
-  content: "";
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 140%;
-  height: 1px;
-  background: rgba(240, 224, 192, 0.25);
-  transform-origin: center;
-  animation: sweep 1s linear infinite;
-}
-@keyframes sweep {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-@keyframes countPulse {
-  0%   { transform: scale(0.4); opacity: 0; }
-  30%  { transform: scale(1.1); opacity: 1; }
-  70%  { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
+  .mini-search {
+    flex: 1;
+    max-width: 690px;
+    height: 44px;
+    border: 1px solid #dfe1e5;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.15);
+  }
+  #q2 {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+  }
 
-/* --- Title card --- */
-#titleCard {
-  position: absolute;
-  top: 7%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 8;
-  text-align: center;
-  color: #e8d5a8;
-  font-family: Georgia, serif;
-  font-style: italic;
-  pointer-events: none;
-  animation: glowSoft 3s ease-in-out infinite alternate;
-}
-#titleCard h1 {
-  font-size: clamp(22px, 3.2vw, 40px);
-  font-weight: normal;
-  letter-spacing: 8px;
-  text-transform: uppercase;
-}
-#titleCard p {
-  font-size: 11px;
-  letter-spacing: 5px;
-  margin-top: 8px;
-  opacity: 0.65;
-}
-@keyframes glowSoft {
-  from { text-shadow: 0 0 20px rgba(201, 168, 106, 0.5); }
-  to   { text-shadow: 0 0 40px rgba(201, 168, 106, 0.9),
-                      0 0 60px rgba(201, 168, 106, 0.5); }
-}
+  .results-body {
+    padding: 16px 28px;
+    max-width: 700px;
+  }
+  .stats {
+    font-size: 13px;
+    color: #70757a;
+    margin-bottom: 22px;
+  }
 
-/* --- Subtitle / lyrics --- */
-#lyric {
-  position: absolute;
-  bottom: 6%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 8;
-  font-family: Georgia, serif;
-  font-style: italic;
-  font-size: clamp(14px, 1.8vw, 22px);
-  color: #fff8e6;
-  text-align: center;
-  padding: 6px 20px;
-  background: rgba(0, 0, 0, 0.55);
-  border-radius: 3px;
-  max-width: 86%;
-  letter-spacing: 0.5px;
-  text-shadow: 2px 2px 3px #000;
-  transition: opacity 0.35s;
-}
+  .result {
+    margin-bottom: 28px;
+  }
+  .result .url {
+    font-size: 14px;
+    color: #202124;
+    margin-bottom: 4px;
+  }
+  .result .url .breadcrumb {
+    color: #4d5156;
+  }
+  .result .title {
+    font-size: 20px;
+    color: #1a0dab;
+    text-decoration: none;
+    display: block;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .result .title:hover { text-decoration: underline; }
+  .result .snippet {
+    font-size: 14px;
+    color: #4d5156;
+    line-height: 1.58;
+  }
+  .result .snippet b {
+    color: #202124;
+    font-weight: 600;
+  }
 
-/* --- Seat silhouettes --- */
-.seats {
-  position: absolute;
-  bottom: 0;
-  left: 0; right: 0;
-  height: 11%;
-  z-index: 7;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 34px 26px at  4% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 13% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 22% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 31% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 40% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 49% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 58% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 67% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 76% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 85% 105%, #000 62%, transparent 68%),
-    radial-gradient(ellipse 34px 26px at 94% 105%, #000 62%, transparent 68%);
-}
+  /* Related searches */
+  .related {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ebebeb;
+  }
+  .related h3 {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    color: #202124;
+  }
+  .related-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 30px;
+  }
+  .related-list a {
+    color: #1a0dab;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 6px 0;
+  }
+  .related-list a:hover { text-decoration: underline; }
 
-/* --- Close button --- */
-#closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 20;
-  padding: 8px 18px;
-  font-size: 13px;
-  cursor: pointer;
-  border: 1px solid rgba(201, 168, 106, 0.5);
-  background: rgba(0, 0, 0, 0.5);
-  color: #c9a86a;
-  font-family: Georgia, serif;
-  border-radius: 20px;
-  letter-spacing: 2px;
-}
-#closeBtn:hover {
-  background: #c9a86a;
-  color: #0d0505;
-}
+  /* Footer */
+  .footer {
+    margin-top: auto;
+    background: #f2f2f2;
+    color: #70757a;
+    font-size: 14px;
+    padding: 14px 24px;
+    border-top: 1px solid #e4e4e4;
+  }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #202124;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: transform 0.3s;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  #toast.on { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- START -->
-<div id="startScreen">
-  <button id="startBtn">Mở rạp phim</button>
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="#">Gmail</a>
+  <a href="#">Hình ảnh</a>
+  <div class="apps-icon" title="Ứng dụng Google">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </div>
+  <div class="avatar">T</div>
 </div>
 
-<!-- CINEMA -->
-<div id="cinema">
-  <div class="projector-beam"></div>
-  <div class="grain"></div>
-
-  <div class="curtain curtain-left"  id="curtainL"></div>
-  <div class="curtain curtain-right" id="curtainR"></div>
-
-  <div id="titleCard">
-    <h1>See You Again</h1>
-    <p>— IN LOVING MEMORY —</p>
+<!-- HOME -->
+<div id="home">
+  <div class="logo">
+    <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
   </div>
 
-  <div id="screenArea">
-    <div id="screenFrame">
-      <iframe id="ytPlayer" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      <div id="countdown">
-        <div class="countdownCircle" id="countdownNum">3</div>
+  <form class="search-box" id="searchForm" autocomplete="off">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#9aa0a6"/>
+    </svg>
+    <input id="q" type="text" placeholder="Tìm trên Google hoặc nhập URL" />
+    <div class="icon-btn" title="Tìm kiếm bằng giọng nói">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#4285f4">
+        <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/>
+      </svg>
+    </div>
+    <div class="icon-btn" title="Tìm kiếm bằng hình ảnh">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#4285f4">
+        <path d="M12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4zm0-6a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+      </svg>
+    </div>
+  </form>
+
+  <div class="buttons">
+    <button type="button" id="btnSearch">Tìm với Google</button>
+    <button type="button" id="btnLucky">Xem trang đầu tiên</button>
+  </div>
+
+  <div class="lang-row">
+    Google có các phiên bản:
+    <a href="#">Tiếng Việt</a>
+    <a href="#">English</a>
+    <a href="#">日本語</a>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="results-header">
+    <div class="mini-logo" id="miniLogo">
+      <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+    </div>
+    <form class="mini-search" id="searchForm2">
+      <input id="q2" type="text" />
+      <div class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#4285f4">
+          <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/>
+        </svg>
       </div>
-      <div id="lyric">♪ ... ♪</div>
+      <div class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5z" fill="#4285f4"/>
+        </svg>
+      </div>
+    </form>
+    <div class="avatar">T</div>
+  </div>
+
+  <div class="results-body">
+    <div class="stats" id="stats">Khoảng 67.000.000 kết quả (0,42 giây)</div>
+    <div id="resultsList"></div>
+    <div class="related">
+      <h3>Các tìm kiếm liên quan</h3>
+      <div class="related-list" id="relatedList"></div>
     </div>
   </div>
 
-  <div class="seats"></div>
-
-  <button id="closeBtn">[ ĐÓNG ]</button>
+  <div class="footer" id="footer">
+    Việt Nam · Ẩn danh · Không có gì là thật đâu :))
+  </div>
 </div>
 
-<script>
-/* ===========================================================================
-   CONFIG
-   =========================================================================== */
-var YOUTUBE_ID  = "RgKAFK5djSk";
-var YOUTUBE_URL = "https://www.youtube.com/embed/" + YOUTUBE_ID +
-                  "?autoplay=1&start=0&rel=0&modestbranding=1";
+<div id="toast">Đang tìm kiếm...</div>
 
-/* ===========================================================================
-   LYRICS
-   =========================================================================== */
-var lyrics = [
-  { t: 0,    text: "♪ ... ♪" },
-  { t: 10,   text: "It's been a long day without you, my friend" },
-  { t: 15,   text: "And I'll tell you all about it when I see you again" },
-  { t: 20,   text: "We've come a long way from where we began" },
-  { t: 25,   text: "Oh, I'll tell you all about it when I see you again" },
-  { t: 30,   text: "When I see you again" },
-  { t: 36,   text: "Damn, who knew?" },
-  { t: 39,   text: "All the planes we flew, good things we been through" },
-  { t: 42,   text: "That I'd be standing right here talking to you" },
-  { t: 45,   text: "'Bout another path, I know we loved to hit the road and laugh" },
-  { t: 49,   text: "But something told me that it wouldn't last" },
-  { t: 52,   text: "Had to switch up, look at things different" },
-  { t: 55,   text: "See the bigger picture" },
-  { t: 57,   text: "Those were the days, hard work forever pays" },
-  { t: 60,   text: "Now I see you in a better place" },
-  { t: 64,   text: "How could we not talk about family when family's all that we got?" },
-  { t: 69,   text: "Everything I went through, you were standing there by my side" },
-  { t: 74,   text: "And now you gon' be with me for the last ride" },
-  { t: 79,   text: "It's been a long day without you, my friend" },
-  { t: 84,   text: "And I'll tell you all about it when I see you again" },
-  { t: 89,   text: "We've come a long way from where we began" },
-  { t: 94,   text: "Oh, I'll tell you all about it when I see you again" },
-  { t: 99,   text: "When I see you again" },
-  { t: 112,  text: "First, you both go out your way and the vibe is feeling strong" },
-  { t: 117,  text: "And what's small turned to a friendship" },
-  { t: 120,  text: "A friendship turned to a bond" },
-  { t: 123,  text: "And that bond will never be broken" },
-  { t: 126,  text: "The love will never get lost" },
-  { t: 130,  text: "And when brotherhood come first" },
-  { t: 133,  text: "Then the line will never be crossed" },
-  { t: 136,  text: "Established it on our own when that line had to be drawn" },
-  { t: 141,  text: "And that line is what we reached" },
-  { t: 144,  text: "So remember me when I'm gone" },
-  { t: 148,  text: "How could we not talk about family when family's all that we got?" },
-  { t: 153,  text: "Everything I went through, you were standing there by my side" },
-  { t: 158,  text: "And now you gon' be with me for the last ride" },
-  { t: 163,  text: "So let the light guide your way, yeah" },
-  { t: 168,  text: "Hold every memory as you go" },
-  { t: 172,  text: "And every road you take will always lead you home" },
-  { t: 177,  text: "It's been a long day without you, my friend" },
-  { t: 182,  text: "And I'll tell you all about it when I see you again" },
-  { t: 187,  text: "We've come a long way from where we began" },
-  { t: 192,  text: "Oh, I'll tell you all about it when I see you again" },
-  { t: 197,  text: "When I see you again" },
-  { t: 215,  text: "🎬 ... 🎬" },
-  { t: 230,  text: "See you again ..." }
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+var genericResults = [
+  {
+    url: "vi.wikipedia.org",
+    breadcrumb: "https://vi.wikipedia.org › wiki › Ket_qua",
+    title: "Kết quả tìm kiếm – Wikipedia tiếng Việt",
+    snippet: "Theo các nhà nghiên cứu tại Đại học <b>Không Có Thật</b>, kết quả bạn đang tìm kiếm có xác suất <b>67%</b> là không tồn tại, 33% còn lại là do bạn gõ sai chính tả."
+  },
+  {
+    url: "chinhphu.vn",
+    breadcrumb: "https://chinhphu.vn › thong-bao",
+    title: "Thông báo khẩn: Bạn vừa bị troll",
+    snippet: "Bộ Thông tin và Truyền thông đã ban hành quyết định số <b>67/2026/TT-TROLL</b> công nhận bạn chính thức bị troll bởi chính bản thân mình."
+  },
+  {
+    url: "shopee.vn",
+    breadcrumb: "https://shopee.vn › san-pham",
+    title: "Sản phẩm bạn đang tìm - Giảm 99%",
+    snippet: "Hết hàng. Nhưng mà cũng không có ai mua đâu nên đừng lo. <b>Miễn phí vận chuyển</b> cho đơn từ 0đ (không áp dụng cho ai cả)."
+  },
+  {
+    url: "youtube.com",
+    breadcrumb: "https://youtube.com › watch",
+    title: "Video bạn đang tìm đã bị xoá",
+    snippet: "Rất tiếc, video này đã bị xoá vì lý do <b>bản quyền</b>, <b>vi phạm cộng đồng</b>, hoặc đơn giản là vì tác giả đã đổi ý. Bạn có thể xem <b>quảng cáo</b> thay thế."
+  },
+  {
+    url: "stackoverflow.com",
+    breadcrumb: "https://stackoverflow.com › questions",
+    title: "Why is my code not working? - Stack Overflow",
+    snippet: "Câu trả lời được chấp nhận: <b>\"Have you tried turning it off and on again?\"</b> (1.247 lượt bình chọn). Bình luận bên dưới: \"Đây là câu hỏi bị trùng, xem #67.\""
+  },
+  {
+    url: "vnexpress.net",
+    breadcrumb: "https://vnexpress.net › goc-nhin",
+    title: "Sự thật về những gì bạn vừa gõ vào thanh tìm kiếm",
+    snippet: "Chuyên gia tâm lý cho biết, việc bạn gõ từ khoá này vào Google lúc <b>nửa đêm</b> là biểu hiện của hội chứng <b>\"tò mò không có mục đích\"</b>. Không có cách chữa."
+  },
+  {
+    url: "facebook.com",
+    breadcrumb: "https://facebook.com › groups",
+    title: "Hội những người bị troll bởi Google",
+    snippet: "Đã có <b>67.000</b> thành viên tham gia. Nhóm hoạt động sôi nổi 24/7. Quy tắc: <b>Không được tin bất cứ điều gì trên Internet</b>."
+  },
+  {
+    url: "twitter.com",
+    breadcrumb: "https://twitter.com › trending",
+    title: "Trending #67 trên Twitter",
+    snippet: "Cả cộng đồng mạng đang bàn tán về <b>#67</b>. Nhưng chưa ai biết nó là cái gì. Bạn cũng không biết. Tôi cũng không biết. <b>Nobody knows.</b>"
+  }
 ];
 
-/* ===========================================================================
-   COUNTDOWN 3-2-1
-   =========================================================================== */
-function runCountdown(callback) {
-  var el        = document.getElementById("countdownNum");
-  var container = document.getElementById("countdown");
-  var seq       = ["3", "2", "1", "🎬"];
-  var i = 0;
+var relatedPool = [
+  "troll là gì",
+  "cách nhận biết bị troll",
+  "google có thật không",
+  "tại sao tôi lại bấm vào đây",
+  "sự thật về 67",
+  "cách thoát khỏi trang này",
+  "nút tắt ở đâu",
+  "internet có thật không",
+  "troll tiếng anh là gì",
+  "tôi có đang mơ không"
+];
 
-  function next() {
-    if (i >= seq.length) {
-      container.classList.add("hide");
-      callback();
-      return;
+/* Các từ khoá đặc biệt → kết quả riêng */
+var specialResults = {
+  "67": [
+    {
+      url: "secret-database.onion",
+      breadcrumb: "https://secret-database.onion › 67",
+      title: "Con số 67 - Bí ẩn chưa được giải đáp",
+      snippet: "Mọi người đều hỏi <b>67 là gì</b>. Nhưng câu trả lời đơn giản là... không có gì cả. Đây chỉ là một con số. Bình tĩnh đi."
     }
-    el.textContent = seq[i];
-    el.style.animation = "none";
-    void el.offsetWidth;
-    el.style.animation = "countPulse 1s ease-out";
-    i++;
-    setTimeout(next, 1000);
+  ],
+  "hack": [
+    {
+      url: "hackers-united.org",
+      breadcrumb: "https://hackers-united.org › tutorial",
+      title: "Hướng dẫn hack NASA bằng HTML - Cực dễ",
+      snippet: "Bước 1: Mở Notepad. Bước 2: Gõ <b>&lt;script&gt;alert('Hacked')&lt;/script&gt;</b>. Bước 3: Chúc mừng, bạn đã hack xong. <b>Không có gì khó cả!</b>"
+    }
+  ],
+  "mèo": [
+    {
+      url: "meow.com",
+      breadcrumb: "https://meow.com › images",
+      title: "1.247.000 hình ảnh về mèo",
+      snippet: "Bạn có biết: Mèo là loài động vật duy nhất có thể <b>đánh thức bạn lúc 4 giờ sáng</b> mà bạn vẫn thấy đáng yêu. Đây là bằng chứng khoa học."
+    }
+  ]
+};
+
+/* =========================================================
+   HÀM RENDER KẾT QUẢ
+   ========================================================= */
+function getResultsFor(query) {
+  var q = query.toLowerCase().trim();
+
+  // Kiểm tra từ khoá đặc biệt
+  for (var key in specialResults) {
+    if (q.indexOf(key) !== -1) {
+      return specialResults[key].concat(genericResults.slice(0, 4));
+    }
   }
-  next();
+
+  // Kết quả generic
+  return genericResults.slice();
 }
 
-/* ===========================================================================
-   LYRIC ENGINE
-   =========================================================================== */
-var lyricTimers = [];
+function renderResults(query) {
+  var list = document.getElementById("resultsList");
+  var results = getResultsFor(query);
+  list.innerHTML = "";
 
-function runLyrics() {
-  var el = document.getElementById("lyric");
-  lyrics.forEach(function (line) {
-    var t = setTimeout(function () {
-      el.style.opacity = 0;
-      setTimeout(function () {
-        el.textContent = line.text;
-        el.style.opacity = 1;
-      }, 180);
-    }, line.t * 1000);
-    lyricTimers.push(t);
-  });
-}
+  results.forEach(function (r) {
+    var div = document.createElement("div");
+    div.className = "result";
+    div.innerHTML =
+      '<div class="url">' +
+        '<span class="breadcrumb">' + r.breadcrumb + '</span>' +
+      '</div>' +
+      '<a class="title" href="javascript:void(0)">' + r.title + '</a>' +
+      '<div class="snippet">' + r.snippet + '</div>';
+    list.appendChild(div);
 
-function clearLyrics() {
-  lyricTimers.forEach(function (t) { clearTimeout(t); });
-  lyricTimers = [];
-}
-
-/* ===========================================================================
-   FALLBACK AUDIO (nếu YouTube bị chặn)
-   =========================================================================== */
-function tryFallback() {
-  setTimeout(function () {
-    var iframe = document.getElementById("ytPlayer");
-    if (!iframe || !iframe.contentWindow) playSadMelody();
-  }, 5000);
-}
-
-function playSadMelody() {
-  try {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var notes = [
-      { f: 392, d: 0.5 }, { f: 440, d: 0.5 }, { f: 494, d: 0.8 },
-      { f: 440, d: 0.4 }, { f: 392, d: 0.6 }, { f: 349, d: 0.6 },
-      { f: 330, d: 0.8 }, { f: 294, d: 1.2 }
-    ];
-    var t = ctx.currentTime;
-    notes.forEach(function (n) {
-      var o = ctx.createOscillator();
-      var g = ctx.createGain();
-      o.type = "sine";
-      o.frequency.value = n.f;
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.07, t + 0.05);
-      g.gain.linearRampToValueAtTime(0, t + n.d);
-      o.connect(g);
-      g.connect(ctx.destination);
-      o.start(t);
-      o.stop(t + n.d);
-      t += n.d;
+    // Click vào kết quả → troll nhẹ
+    div.querySelector(".title").addEventListener("click", function () {
+      showToast("Không phải link thật đâu bạn ơi :))");
     });
-  } catch (e) {}
-}
-
-/* ===========================================================================
-   ACTIVATE / DEACTIVATE
-   =========================================================================== */
-function activate() {
-  // Ẩn start screen
-  document.getElementById("startScreen").classList.add("hide");
-
-  // Hiện rạp
-  var cinema = document.getElementById("cinema");
-  cinema.classList.add("active");
-
-  // Fullscreen
-  try {
-    if (cinema.requestFullscreen) cinema.requestFullscreen();
-    else if (cinema.webkitRequestFullscreen) cinema.webkitRequestFullscreen();
-  } catch (e) {}
-
-  // Mở rèm sau 300ms
-  setTimeout(function () {
-    document.getElementById("curtainL").classList.add("open");
-    document.getElementById("curtainR").classList.add("open");
-  }, 300);
-
-  // Bắt đầu đếm ngược, sau đó load YouTube
-  runCountdown(function () {
-    document.getElementById("ytPlayer").src = YOUTUBE_URL;
-    runLyrics();
-    tryFallback();
   });
+
+  // Related
+  var rel = document.getElementById("relatedList");
+  rel.innerHTML = "";
+  var shuffled = relatedPool.slice().sort(function () { return Math.random() - 0.5; });
+  shuffled.slice(0, 8).forEach(function (s) {
+    var a = document.createElement("a");
+    a.href = "javascript:void(0)";
+    a.textContent = s;
+    a.addEventListener("click", function () {
+      document.getElementById("q2").value = s;
+      document.getElementById("q").value = s;
+      doSearch(s);
+    });
+    rel.appendChild(a);
+  });
+
+  // Stats
+  var num = (Math.random() * 900000000 + 100000000).toLocaleString("vi-VN");
+  var time = (Math.random() * 0.9 + 0.1).toFixed(2).replace(".", ",");
+  document.getElementById("stats").textContent =
+    "Khoảng " + num + " kết quả (" + time + " giây)";
 }
 
-function deactivate() {
-  var cinema = document.getElementById("cinema");
-  cinema.classList.remove("active");
-
-  // Reset
-  document.getElementById("curtainL").classList.remove("open");
-  document.getElementById("curtainR").classList.remove("open");
-  document.getElementById("ytPlayer").src = "";
-  document.getElementById("countdown").classList.remove("hide");
-  document.getElementById("countdownNum").textContent = "3";
-  document.getElementById("lyric").textContent = "♪ ... ♪";
-  clearLyrics();
-
-  // Hiện lại start screen
-  document.getElementById("startScreen").classList.remove("hide");
-
-  if (document.fullscreenElement) {
-    document.exitFullscreen().catch(function () {});
+/* =========================================================
+   SEARCH
+   ========================================================= */
+function doSearch(query) {
+  if (!query || !query.trim()) {
+    showToast("Gõ gì đó đi bạn ơi =))");
+    return;
   }
+
+  showToast("Đang tìm " + query + "...");
+
+  // Đổi view
+  document.getElementById("home").classList.add("off");
+  document.getElementById("results").classList.add("on");
+  document.title = query + " - Tìm trên Google";
+  document.getElementById("q2").value = query;
+
+  // Giả lập delay
+  setTimeout(function () {
+    renderResults(query);
+  }, 400);
 }
 
-/* ===========================================================================
+/* =========================================================
+   TOAST
+   ========================================================= */
+var toastTimer = null;
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () {
+    t.classList.remove("on");
+  }, 2000);
+}
+
+/* =========================================================
    EVENTS
-   =========================================================================== */
-document.getElementById("startBtn").addEventListener("click", activate);
-document.getElementById("closeBtn").addEventListener("click", deactivate);
+   ========================================================= */
+document.getElementById("searchForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  doSearch(document.getElementById("q").value);
+});
 
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") {
-    var cinema = document.getElementById("cinema");
-    if (cinema.classList.contains("active")) deactivate();
+document.getElementById("btnSearch").addEventListener("click", function () {
+  doSearch(document.getElementById("q").value);
+});
+
+document.getElementById("btnLucky").addEventListener("click", function () {
+  var q = document.getElementById("q").value.trim();
+  if (!q) {
+    showToast("Gõ gì đó đã rồi hẵng may mắn =))");
+    return;
   }
+  showToast("Bạn thật may mắn khi bấm vào nút này =))");
+  // Troll: nút này không làm gì cả, chỉ hiện toast
+  setTimeout(function () {
+    doSearch(q);
+  }, 500);
+});
+
+document.getElementById("searchForm2").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var q = document.getElementById("q2").value;
+  document.getElementById("q").value = q;
+  doSearch(q);
+});
+
+// Enter trong ô input 1
+document.getElementById("q").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    doSearch(this.value);
+  }
+});
+
+// Enter trong ô input 2
+document.getElementById("q2").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    document.getElementById("q").value = this.value;
+    doSearch(this.value);
+  }
+});
+
+// Bấm mini logo → về trang chủ
+document.getElementById("miniLogo").addEventListener("click", function () {
+  document.getElementById("home").classList.remove("off");
+  document.getElementById("results").classList.remove("on");
+  document.title = "Google";
+  document.getElementById("q").value = "";
+  document.getElementById("q").focus();
+});
+
+// Focus vào ô input khi vào trang
+window.addEventListener("load", function () {
+  document.getElementById("q").focus();
 });
 </script>
 
