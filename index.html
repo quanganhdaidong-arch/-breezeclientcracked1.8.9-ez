@@ -3,285 +3,365 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>See You Again</title>
+<title>Rạp phim ký ức</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   min-height: 100vh;
-  background: #0a0a1a;
+  background: #0d0505;
   color: #fff;
   font-family: Georgia, "Times New Roman", serif;
-  display: grid;
-  place-items: center;
   overflow: hidden;
 }
 
-/* ============ START BUTTON ============ */
+/* ================= START SCREEN ================= */
+#startScreen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 40%, #2a0808, #0d0505 70%);
+  z-index: 100;
+  transition: opacity 0.8s;
+}
+#startScreen.hide { opacity: 0; pointer-events: none; }
+
 #startBtn {
-  padding: 18px 44px;
-  font-size: 20px;
+  padding: 22px 56px;
+  font-size: 22px;
   cursor: pointer;
   border: 2px solid #c9a86a;
-  border-radius: 50px;
+  border-radius: 6px;
   background: transparent;
-  color: #e8d5a8;
+  color: #c9a86a;
   font-family: Georgia, serif;
   font-style: italic;
-  letter-spacing: 2px;
-  transition: all 0.4s ease;
-  box-shadow: 0 0 30px rgba(201, 168, 106, 0.4);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  transition: all 0.4s;
+  box-shadow: 0 0 40px rgba(201, 168, 106, 0.3);
 }
 #startBtn:hover {
   background: #c9a86a;
-  color: #0a0a1a;
-  box-shadow: 0 0 60px rgba(201, 168, 106, 0.8);
+  color: #0d0505;
+  box-shadow: 0 0 80px rgba(201, 168, 106, 0.8);
   transform: scale(1.05);
 }
-#startBtn:active { transform: scale(0.98); }
 
-/* ============ OVERLAY ============ */
-#overlay {
-  display: none;
+/* ================= CINEMA ROOM ================= */
+#cinema {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  display: none;
   overflow: hidden;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(ellipse at 50% 20%, #1a1a3a 0%, #0a0a1a 60%, #050510 100%);
-}
-#overlay.active { display: flex; }
-
-/* ============ STARS ============ */
-.star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: #fff;
-  border-radius: 50%;
-  animation: twinkle 3s infinite;
-  pointer-events: none;
-  z-index: 0;
-}
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.5); }
-}
-
-/* ============ FLOATING LANTERNS ============ */
-.lantern {
-  position: absolute;
-  font-size: 28px;
-  z-index: 1;
-  animation: floatUp linear infinite;
-  pointer-events: none;
-  opacity: 0.85;
-  filter: drop-shadow(0 0 12px #ffaa44);
-}
-@keyframes floatUp {
-  from { transform: translateY(100vh) translateX(0) scale(0.9); opacity: 0; }
-  10%  { opacity: 0.9; }
-  90%  { opacity: 0.9; }
-  to   { transform: translateY(-20vh) translateX(30px) scale(1.1); opacity: 0; }
-}
-
-/* ============ FALLING PETALS ============ */
-.petal {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle, #ffccdd, #cc6688);
-  border-radius: 50% 0 50% 50%;
-  z-index: 1;
-  animation: fallDown linear infinite;
-  pointer-events: none;
-  opacity: 0.7;
-}
-@keyframes fallDown {
-  from { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-  10%  { opacity: 0.7; }
-  90%  { opacity: 0.7; }
-  to   { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-
-/* ============ TOP TITLE ============ */
-#topText {
-  position: absolute;
-  top: 4%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  font-size: clamp(20px, 3.6vw, 40px);
-  font-weight: normal;
-  color: #e8d5a8;
-  font-family: Georgia, serif;
-  font-style: italic;
-  letter-spacing: 4px;
-  text-shadow: 0 0 20px rgba(201, 168, 106, 0.8),
-               0 0 40px rgba(201, 168, 106, 0.4);
-  text-align: center;
-  animation: glowSoft 3s infinite alternate;
-}
-@keyframes glowSoft {
-  from { text-shadow: 0 0 20px rgba(201, 168, 106, 0.6),
-                      0 0 40px rgba(201, 168, 106, 0.3); }
-  to   { text-shadow: 0 0 30px rgba(201, 168, 106, 1),
-                      0 0 60px rgba(201, 168, 106, 0.6); }
-}
-
-/* ============ YOUTUBE PLAYER ============ */
-#player-wrap {
-  position: relative;
-  z-index: 3;
-  width: min(760px, 88vw);
-  aspect-ratio: 16/9;
-  border: 2px solid rgba(201, 168, 106, 0.6);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 60px rgba(201, 168, 106, 0.4),
-              0 0 120px rgba(80, 60, 150, 0.5);
   background: #000;
 }
-#player-wrap iframe {
+#cinema.active { display: block; }
+
+/* --- Curtains --- */
+.curtain {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 50%;
+  z-index: 10;
+  transition: transform 1.8s cubic-bezier(0.7, 0, 0.3, 1);
+  background:
+    repeating-linear-gradient(
+      to right,
+      #2a0505 0px,
+      #5a0c0c 12px,
+      #3a0808 24px,
+      #6a1010 36px,
+      #2a0505 48px
+    );
+  box-shadow: 0 0 80px rgba(0,0,0,0.95) inset;
+}
+.curtain::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 30px;
+  background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+}
+.curtain-left {
+  left: 0;
+  transform: translateX(-100%);
+}
+.curtain-left::after { right: 0; background: linear-gradient(to left, rgba(0,0,0,0.7), transparent); }
+.curtain-right {
+  right: 0;
+  transform: translateX(100%);
+}
+.curtain-right::after { left: 0; }
+.curtain-left.open  { transform: translateX(0); }
+.curtain-right.open { transform: translateX(0); }
+
+/* --- Projector beam --- */
+.projector-beam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 30%;
+  background: linear-gradient(to bottom,
+    rgba(255, 235, 160, 0.7) 0%,
+    rgba(255, 220, 130, 0.15) 60%,
+    transparent 100%);
+  filter: blur(20px);
+  z-index: 4;
+  pointer-events: none;
+  animation: flicker 0.12s infinite;
+}
+@keyframes flicker {
+  0%, 100% { opacity: 0.75; }
+  40%      { opacity: 0.9; }
+  70%      { opacity: 0.6; }
+}
+
+/* --- Film grain --- */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='3'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grainShift 0.25s steps(2) infinite;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-6px, 4px); }
+  100% { transform: translate(5px, -5px); }
+}
+
+/* --- Screen frame --- */
+#screenArea {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 5;
+}
+#screenFrame {
+  position: relative;
+  width: min(920px, 82vw);
+  aspect-ratio: 16/9;
+  background: #000;
+  border: 1px solid rgba(201, 168, 106, 0.25);
+  box-shadow:
+    0 0 80px rgba(255, 200, 100, 0.15),
+    0 0 160px rgba(255, 200, 100, 0.08),
+    0 20px 60px rgba(0, 0, 0, 0.9);
+}
+#ytPlayer {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
 }
 
-/* ============ POLAROID MEMORY ============ */
-.polaroid {
+/* --- Countdown --- */
+#countdown {
   position: absolute;
-  width: 130px;
-  height: 160px;
-  background: #fdfdf5;
-  padding: 8px 8px 30px 8px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-  z-index: 2;
-  pointer-events: none;
-  animation: sway 6s ease-in-out infinite;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #000;
+  z-index: 9;
+  transition: opacity 0.6s;
 }
-.polaroid .photo {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #4a4a8a, #8a5a8a);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
+#countdown.hide { opacity: 0; pointer-events: none; }
+
+.countdownCircle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  border: 3px solid #f0e0c0;
+  border-radius: 50%;
+  font-family: Georgia, serif;
+  font-size: 110px;
+  font-weight: bold;
+  color: #f0e0c0;
+  text-shadow: 0 0 20px rgba(240, 224, 192, 0.6);
+  overflow: hidden;
 }
-.polaroid .caption {
+.countdownCircle::before {
+  content: "";
   position: absolute;
-  bottom: 6px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: "Brush Script MT", cursive;
-  font-size: 13px;
-  color: #555;
+  inset: 22px;
+  border: 1px solid rgba(240, 224, 192, 0.35);
+  border-radius: 50%;
 }
-@keyframes sway {
-  0%, 100% { transform: rotate(-4deg) translateY(0); }
-  50%      { transform: rotate(4deg) translateY(-10px); }
+.countdownCircle::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 140%;
+  height: 1px;
+  background: rgba(240, 224, 192, 0.25);
+  transform-origin: center;
+  animation: sweep 1s linear infinite;
+}
+@keyframes sweep {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes countPulse {
+  0%   { transform: scale(0.4); opacity: 0; }
+  30%  { transform: scale(1.1); opacity: 1; }
+  70%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
 }
 
-/* ============ LYRIC BOX ============ */
-#lyric {
+/* --- Title card --- */
+#titleCard {
   position: absolute;
-  bottom: 8%;
+  top: 7%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 6;
-  font-size: clamp(16px, 2.6vw, 28px);
-  color: #fff;
+  z-index: 8;
+  text-align: center;
+  color: #e8d5a8;
   font-family: Georgia, serif;
   font-style: italic;
-  text-align: center;
-  padding: 12px 28px;
-  background: rgba(10, 10, 26, 0.55);
-  border: 1px solid rgba(201, 168, 106, 0.4);
-  border-radius: 12px;
-  max-width: 90%;
-  letter-spacing: 1px;
-  text-shadow: 0 0 10px rgba(201, 168, 106, 0.6);
-  transition: opacity 0.4s ease;
-  backdrop-filter: blur(4px);
+  pointer-events: none;
+  animation: glowSoft 3s ease-in-out infinite alternate;
+}
+#titleCard h1 {
+  font-size: clamp(22px, 3.2vw, 40px);
+  font-weight: normal;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+}
+#titleCard p {
+  font-size: 11px;
+  letter-spacing: 5px;
+  margin-top: 8px;
+  opacity: 0.65;
+}
+@keyframes glowSoft {
+  from { text-shadow: 0 0 20px rgba(201, 168, 106, 0.5); }
+  to   { text-shadow: 0 0 40px rgba(201, 168, 106, 0.9),
+                      0 0 60px rgba(201, 168, 106, 0.5); }
 }
 
-/* ============ CLOSE BUTTON ============ */
+/* --- Subtitle / lyrics --- */
+#lyric {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: clamp(14px, 1.8vw, 22px);
+  color: #fff8e6;
+  text-align: center;
+  padding: 6px 20px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 3px;
+  max-width: 86%;
+  letter-spacing: 0.5px;
+  text-shadow: 2px 2px 3px #000;
+  transition: opacity 0.35s;
+}
+
+/* --- Seat silhouettes --- */
+.seats {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 11%;
+  z-index: 7;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 34px 26px at  4% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 13% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 22% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 31% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 40% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 49% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 58% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 67% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 76% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 85% 105%, #000 62%, transparent 68%),
+    radial-gradient(ellipse 34px 26px at 94% 105%, #000 62%, transparent 68%);
+}
+
+/* --- Close button --- */
 #closeBtn {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 10;
+  z-index: 20;
   padding: 8px 18px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
-  border: 1px solid rgba(201, 168, 106, 0.6);
-  background: rgba(10, 10, 26, 0.5);
-  color: #e8d5a8;
+  border: 1px solid rgba(201, 168, 106, 0.5);
+  background: rgba(0, 0, 0, 0.5);
+  color: #c9a86a;
   font-family: Georgia, serif;
   border-radius: 20px;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 #closeBtn:hover {
   background: #c9a86a;
-  color: #0a0a1a;
-}
-
-/* ============ QUOTE CORNER ============ */
-#quote {
-  position: absolute;
-  bottom: 4%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  font-size: 12px;
-  color: rgba(232, 213, 168, 0.7);
-  font-style: italic;
-  letter-spacing: 2px;
-  text-align: center;
-  font-family: Georgia, serif;
+  color: #0d0505;
 }
 </style>
 </head>
 <body>
 
-  <button id="startBtn">🎵 Bấm vào đây</button>
+<!-- START -->
+<div id="startScreen">
+  <button id="startBtn">Mở rạp phim</button>
+</div>
 
-  <div id="overlay">
-    <div id="topText">See You Again</div>
+<!-- CINEMA -->
+<div id="cinema">
+  <div class="projector-beam"></div>
+  <div class="grain"></div>
 
-    <div id="player-wrap">
-      <iframe
-        id="ytPlayer"
-        src=""
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-        title="See You Again">
-      </iframe>
-    </div>
+  <div class="curtain curtain-left"  id="curtainL"></div>
+  <div class="curtain curtain-right" id="curtainR"></div>
 
-    <div id="lyric">♪ ... ♪</div>
-
-    <div id="quote">— In loving memory of the ones we miss —</div>
-
-    <button id="closeBtn">[ TẮT ]</button>
+  <div id="titleCard">
+    <h1>See You Again</h1>
+    <p>— IN LOVING MEMORY —</p>
   </div>
+
+  <div id="screenArea">
+    <div id="screenFrame">
+      <iframe id="ytPlayer" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div id="countdown">
+        <div class="countdownCircle" id="countdownNum">3</div>
+      </div>
+      <div id="lyric">♪ ... ♪</div>
+    </div>
+  </div>
+
+  <div class="seats"></div>
+
+  <button id="closeBtn">[ ĐÓNG ]</button>
+</div>
 
 <script>
 /* ===========================================================================
    CONFIG
    =========================================================================== */
-var YOUTUBE_ID  = "RgKAFK5djSk";  // Wiz Khalifa ft. Charlie Puth - See You Again
+var YOUTUBE_ID  = "RgKAFK5djSk";
 var YOUTUBE_URL = "https://www.youtube.com/embed/" + YOUTUBE_ID +
                   "?autoplay=1&start=0&rel=0&modestbranding=1";
 
 /* ===========================================================================
-   LYRICS + TIMING (giây)
+   LYRICS
    =========================================================================== */
 var lyrics = [
   { t: 0,    text: "♪ ... ♪" },
@@ -290,132 +370,71 @@ var lyrics = [
   { t: 20,   text: "We've come a long way from where we began" },
   { t: 25,   text: "Oh, I'll tell you all about it when I see you again" },
   { t: 30,   text: "When I see you again" },
-  { t: 35,   text: "Damn, who knew?" },
-  { t: 38,   text: "All the planes we flew, good things we been through" },
-  { t: 41,   text: "That I'd be standing right here talking to you" },
-  { t: 44,   text: "'Bout another path, I know we loved to hit the road and laugh" },
-  { t: 48,   text: "But something told me that it wouldn't last" },
-  { t: 51,   text: "Had to switch up, look at things different" },
-  { t: 54,   text: "See the bigger picture" },
-  { t: 56,   text: "Those were the days, hard work forever pays" },
-  { t: 59,   text: "Now I see you in a better place" },
-  { t: 63,   text: "How could we not talk about family when family's all that we got?" },
-  { t: 68,   text: "Everything I went through, you were standing there by my side" },
-  { t: 73,   text: "And now you gon' be with me for the last ride" },
-  { t: 78,   text: "It's been a long day without you, my friend" },
-  { t: 83,   text: "And I'll tell you all about it when I see you again" },
-  { t: 88,   text: "We've come a long way from where we began" },
-  { t: 93,   text: "Oh, I'll tell you all about it when I see you again" },
-  { t: 98,   text: "When I see you again" },
-  { t: 110,  text: "First, you both go out your way and the vibe is feeling strong" },
-  { t: 115,  text: "And what's small turned to a friendship" },
-  { t: 118,  text: "A friendship turned to a bond" },
-  { t: 121,  text: "And that bond will never be broken" },
-  { t: 124,  text: "The love will never get lost" },
-  { t: 128,  text: "And when brotherhood come first" },
-  { t: 131,  text: "Then the line will never be crossed" },
-  { t: 134,  text: "Established it on our own when that line had to be drawn" },
-  { t: 139,  text: "And that line is what we reached" },
-  { t: 142,  text: "So remember me when I'm gone" },
-  { t: 146,  text: "How could we not talk about family when family's all that we got?" },
-  { t: 151,  text: "Everything I went through, you were standing there by my side" },
-  { t: 156,  text: "And now you gon' be with me for the last ride" },
-  { t: 161,  text: "So let the light guide your way, yeah" },
-  { t: 166,  text: "Hold every memory as you go" },
-  { t: 170,  text: "And every road you take will always lead you home" },
-  { t: 175,  text: "It's been a long day without you, my friend" },
-  { t: 180,  text: "And I'll tell you all about it when I see you again" },
-  { t: 185,  text: "We've come a long way from where we began" },
-  { t: 190,  text: "Oh, I'll tell you all about it when I see you again" },
-  { t: 195,  text: "When I see you again" },
-  { t: 210,  text: "🎵 ... 🎵" },
-  { t: 225,  text: "See you again ..." }
+  { t: 36,   text: "Damn, who knew?" },
+  { t: 39,   text: "All the planes we flew, good things we been through" },
+  { t: 42,   text: "That I'd be standing right here talking to you" },
+  { t: 45,   text: "'Bout another path, I know we loved to hit the road and laugh" },
+  { t: 49,   text: "But something told me that it wouldn't last" },
+  { t: 52,   text: "Had to switch up, look at things different" },
+  { t: 55,   text: "See the bigger picture" },
+  { t: 57,   text: "Those were the days, hard work forever pays" },
+  { t: 60,   text: "Now I see you in a better place" },
+  { t: 64,   text: "How could we not talk about family when family's all that we got?" },
+  { t: 69,   text: "Everything I went through, you were standing there by my side" },
+  { t: 74,   text: "And now you gon' be with me for the last ride" },
+  { t: 79,   text: "It's been a long day without you, my friend" },
+  { t: 84,   text: "And I'll tell you all about it when I see you again" },
+  { t: 89,   text: "We've come a long way from where we began" },
+  { t: 94,   text: "Oh, I'll tell you all about it when I see you again" },
+  { t: 99,   text: "When I see you again" },
+  { t: 112,  text: "First, you both go out your way and the vibe is feeling strong" },
+  { t: 117,  text: "And what's small turned to a friendship" },
+  { t: 120,  text: "A friendship turned to a bond" },
+  { t: 123,  text: "And that bond will never be broken" },
+  { t: 126,  text: "The love will never get lost" },
+  { t: 130,  text: "And when brotherhood come first" },
+  { t: 133,  text: "Then the line will never be crossed" },
+  { t: 136,  text: "Established it on our own when that line had to be drawn" },
+  { t: 141,  text: "And that line is what we reached" },
+  { t: 144,  text: "So remember me when I'm gone" },
+  { t: 148,  text: "How could we not talk about family when family's all that we got?" },
+  { t: 153,  text: "Everything I went through, you were standing there by my side" },
+  { t: 158,  text: "And now you gon' be with me for the last ride" },
+  { t: 163,  text: "So let the light guide your way, yeah" },
+  { t: 168,  text: "Hold every memory as you go" },
+  { t: 172,  text: "And every road you take will always lead you home" },
+  { t: 177,  text: "It's been a long day without you, my friend" },
+  { t: 182,  text: "And I'll tell you all about it when I see you again" },
+  { t: 187,  text: "We've come a long way from where we began" },
+  { t: 192,  text: "Oh, I'll tell you all about it when I see you again" },
+  { t: 197,  text: "When I see you again" },
+  { t: 215,  text: "🎬 ... 🎬" },
+  { t: 230,  text: "See you again ..." }
 ];
 
 /* ===========================================================================
-   STARS
+   COUNTDOWN 3-2-1
    =========================================================================== */
-function spawnStars(count) {
-  var overlay = document.getElementById("overlay");
-  for (var i = 0; i < count; i++) {
-    var s = document.createElement("div");
-    s.className = "star";
-    s.style.left = Math.random() * 100 + "%";
-    s.style.top  = Math.random() * 100 + "%";
-    s.style.width  = (1 + Math.random() * 2) + "px";
-    s.style.height = s.style.width;
-    s.style.animationDelay = (Math.random() * 3) + "s";
-    s.style.animationDuration = (2 + Math.random() * 3) + "s";
-    overlay.appendChild(s);
+function runCountdown(callback) {
+  var el        = document.getElementById("countdownNum");
+  var container = document.getElementById("countdown");
+  var seq       = ["3", "2", "1", "🎬"];
+  var i = 0;
+
+  function next() {
+    if (i >= seq.length) {
+      container.classList.add("hide");
+      callback();
+      return;
+    }
+    el.textContent = seq[i];
+    el.style.animation = "none";
+    void el.offsetWidth;
+    el.style.animation = "countPulse 1s ease-out";
+    i++;
+    setTimeout(next, 1000);
   }
-}
-
-/* ===========================================================================
-   FLOATING LANTERNS
-   =========================================================================== */
-var lanternEmojis = ["🏮", "🕯️", "🕊️", "✨", "💫"];
-
-function spawnLanterns(count) {
-  var overlay = document.getElementById("overlay");
-  for (var i = 0; i < count; i++) {
-    var l = document.createElement("div");
-    l.className = "lantern";
-    l.textContent = lanternEmojis[Math.floor(Math.random() * lanternEmojis.length)];
-    l.style.left = Math.random() * 100 + "%";
-    l.style.animationDuration = (12 + Math.random() * 10) + "s";
-    l.style.animationDelay = (Math.random() * 12) + "s";
-    l.style.fontSize = (20 + Math.random() * 20) + "px";
-    overlay.appendChild(l);
-  }
-}
-
-/* ===========================================================================
-   FALLING PETALS
-   =========================================================================== */
-function spawnPetals(count) {
-  var overlay = document.getElementById("overlay");
-  for (var i = 0; i < count; i++) {
-    var p = document.createElement("div");
-    p.className = "petal";
-    p.style.left = Math.random() * 100 + "%";
-    p.style.animationDuration = (8 + Math.random() * 8) + "s";
-    p.style.animationDelay = (Math.random() * 8) + "s";
-    p.style.width = p.style.height = (8 + Math.random() * 10) + "px";
-    overlay.appendChild(p);
-  }
-}
-
-/* ===========================================================================
-   POLAROID MEMORIES
-   =========================================================================== */
-var memories = [
-  { emoji: "🌅", caption: "Those days" },
-  { emoji: "🎸", caption: "Our song" },
-  { emoji: "🏍️", caption: "Last ride" },
-  { emoji: "🌊", caption: "Summer '19" },
-  { emoji: "⭐", caption: "Forever" }
-];
-
-function spawnPolaroids() {
-  var overlay = document.getElementById("overlay");
-  var positions = [
-    { left: "3%",  top: "18%" },
-    { left: "88%", top: "22%" },
-    { left: "5%",  top: "62%" },
-    { left: "88%", top: "65%" },
-    { left: "45%", top: "2%"  }
-  ];
-  memories.forEach(function (m, i) {
-    var p = document.createElement("div");
-    p.className = "polaroid";
-    p.style.left = positions[i].left;
-    p.style.top  = positions[i].top;
-    p.style.animationDelay = (i * 0.8) + "s";
-    p.innerHTML =
-      '<div class="photo">' + m.emoji + '</div>' +
-      '<div class="caption">' + m.caption + '</div>';
-    overlay.appendChild(p);
-  });
+  next();
 }
 
 /* ===========================================================================
@@ -431,7 +450,7 @@ function runLyrics() {
       setTimeout(function () {
         el.textContent = line.text;
         el.style.opacity = 1;
-      }, 200);
+      }, 180);
     }, line.t * 1000);
     lyricTimers.push(t);
   });
@@ -443,45 +462,37 @@ function clearLyrics() {
 }
 
 /* ===========================================================================
-   AUDIO FALLBACK (nếu YouTube bị chặn)
+   FALLBACK AUDIO (nếu YouTube bị chặn)
    =========================================================================== */
-function tryPlayFallbackAudio() {
+function tryFallback() {
   setTimeout(function () {
     var iframe = document.getElementById("ytPlayer");
-    if (!iframe || !iframe.contentWindow) {
-      playGentleMelody();
-    }
-  }, 3000);
+    if (!iframe || !iframe.contentWindow) playSadMelody();
+  }, 5000);
 }
 
-function playGentleMelody() {
+function playSadMelody() {
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    // Giai điệu nhẹ nhàng - hợp âm buồn
     var notes = [
-      { f: 392, d: 0.5 },  // G
-      { f: 440, d: 0.5 },  // A
-      { f: 494, d: 0.8 },  // B
-      { f: 440, d: 0.4 },  // A
-      { f: 392, d: 0.6 },  // G
-      { f: 349, d: 0.6 },  // F
-      { f: 330, d: 0.8 },  // E
-      { f: 294, d: 1.0 }   // D
+      { f: 392, d: 0.5 }, { f: 440, d: 0.5 }, { f: 494, d: 0.8 },
+      { f: 440, d: 0.4 }, { f: 392, d: 0.6 }, { f: 349, d: 0.6 },
+      { f: 330, d: 0.8 }, { f: 294, d: 1.2 }
     ];
-    var time = ctx.currentTime;
+    var t = ctx.currentTime;
     notes.forEach(function (n) {
-      var osc = ctx.createOscillator();
-      var gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.value = n.f;
-      gain.gain.setValueAtTime(0, time);
-      gain.gain.linearRampToValueAtTime(0.08, time + 0.05);
-      gain.gain.linearRampToValueAtTime(0, time + n.d);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(time);
-      osc.stop(time + n.d);
-      time += n.d;
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.value = n.f;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.07, t + 0.05);
+      g.gain.linearRampToValueAtTime(0, t + n.d);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(t);
+      o.stop(t + n.d);
+      t += n.d;
     });
   } catch (e) {}
 }
@@ -490,49 +501,49 @@ function playGentleMelody() {
    ACTIVATE / DEACTIVATE
    =========================================================================== */
 function activate() {
-  var overlay = document.getElementById("overlay");
-  overlay.classList.add("active");
+  // Ẩn start screen
+  document.getElementById("startScreen").classList.add("hide");
+
+  // Hiện rạp
+  var cinema = document.getElementById("cinema");
+  cinema.classList.add("active");
 
   // Fullscreen
   try {
-    if (overlay.requestFullscreen) overlay.requestFullscreen();
-    else if (overlay.webkitRequestFullscreen) overlay.webkitRequestFullscreen();
+    if (cinema.requestFullscreen) cinema.requestFullscreen();
+    else if (cinema.webkitRequestFullscreen) cinema.webkitRequestFullscreen();
   } catch (e) {}
 
-  // Load YouTube
-  document.getElementById("ytPlayer").src = YOUTUBE_URL;
+  // Mở rèm sau 300ms
+  setTimeout(function () {
+    document.getElementById("curtainL").classList.add("open");
+    document.getElementById("curtainR").classList.add("open");
+  }, 300);
 
-  // Effects
-  spawnStars(120);
-  spawnLanterns(12);
-  spawnPetals(30);
-  spawnPolaroids();
-
-  // Lyrics
-  runLyrics();
-
-  // Fallback audio nếu YT bị chặn
-  tryPlayFallbackAudio();
+  // Bắt đầu đếm ngược, sau đó load YouTube
+  runCountdown(function () {
+    document.getElementById("ytPlayer").src = YOUTUBE_URL;
+    runLyrics();
+    tryFallback();
+  });
 }
 
 function deactivate() {
-  var overlay = document.getElementById("overlay");
-  overlay.classList.remove("active");
+  var cinema = document.getElementById("cinema");
+  cinema.classList.remove("active");
 
-  // Dừng YouTube
+  // Reset
+  document.getElementById("curtainL").classList.remove("open");
+  document.getElementById("curtainR").classList.remove("open");
   document.getElementById("ytPlayer").src = "";
-
-  // Dừng lyrics
+  document.getElementById("countdown").classList.remove("hide");
+  document.getElementById("countdownNum").textContent = "3";
+  document.getElementById("lyric").textContent = "♪ ... ♪";
   clearLyrics();
 
-  // Xóa effects
-  var els = overlay.querySelectorAll(".star, .lantern, .petal, .polaroid");
-  els.forEach(function (el) { el.remove(); });
+  // Hiện lại start screen
+  document.getElementById("startScreen").classList.remove("hide");
 
-  // Reset lyric
-  document.getElementById("lyric").textContent = "♪ ... ♪";
-
-  // Thoát fullscreen
   if (document.fullscreenElement) {
     document.exitFullscreen().catch(function () {});
   }
@@ -546,8 +557,8 @@ document.getElementById("closeBtn").addEventListener("click", deactivate);
 
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
-    var overlay = document.getElementById("overlay");
-    if (overlay.classList.contains("active")) deactivate();
+    var cinema = document.getElementById("cinema");
+    if (cinema.classList.contains("active")) deactivate();
   }
 });
 </script>
